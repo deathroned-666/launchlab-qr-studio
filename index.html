@@ -6,8 +6,70 @@
   <title>LaunchLab QR Studio - Free Static QR Code Generator</title>
   <meta name="description" content="Create free static QR codes for URLs, Wi-Fi, contact cards, email, SMS, WhatsApp, locations, and batches. Private browser-based QR generation with PNG and SVG downloads.">
   <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://launchlab-qr-studio.arbietapel.workers.dev/">
   <meta property="og:title" content="LaunchLab QR Studio">
   <meta property="og:description" content="A free privacy-first QR code generator for print-ready static QR codes that never expire.">
+  <meta property="og:url" content="https://launchlab-qr-studio.arbietapel.workers.dev/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "LaunchLab QR Studio",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any modern browser",
+    "url": "https://launchlab-qr-studio.arbietapel.workers.dev/",
+    "description": "A free browser-based static QR code generator for private, print-ready QR codes that never expire.",
+    "creator": {
+      "@type": "Organization",
+      "name": "LaunchLab",
+      "email": "launchlab9@gmail.com"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Static QR code generation",
+      "PNG and SVG download",
+      "Wi-Fi, vCard, event, email, SMS, WhatsApp, location, and URL QR support",
+      "Browser-based QR generation",
+      "Print proof guidance"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Do static QR codes expire?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. A static QR code keeps the data inside the code itself. If the destination URL stays online, the printed QR code keeps working."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I edit a static QR code after printing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Not with a static QR code. Use a redirect URL that you control if you may need to change the destination after printing."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does LaunchLab QR Studio store QR code content?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The generator is designed to create QR codes in your browser without requiring an account or intentionally storing QR content on a server."
+        }
+      }
+    ]
+  }
+  </script>
   <style>
     :root {
       --ink: #020826;
@@ -77,10 +139,10 @@
     .navlinks { display: flex; align-items: center; gap: 18px; font-size: 14px; }
     .navlinks a { color: var(--muted); text-decoration: none; }
     .hero {
-      padding: 54px 0 30px;
+      padding: 36px 0 18px;
       display: grid;
       grid-template-columns: 1fr;
-      gap: 24px;
+      gap: 18px;
     }
     .eyebrow {
       margin: 0 0 10px;
@@ -92,9 +154,9 @@
     }
     h1 {
       margin: 0;
-      max-width: 820px;
-      font-size: clamp(36px, 7vw, 72px);
-      line-height: 0.96;
+      max-width: 760px;
+      font-size: clamp(34px, 6vw, 60px);
+      line-height: 1;
       letter-spacing: 0;
     }
     .lead {
@@ -103,6 +165,32 @@
       color: var(--muted);
       font-size: 19px;
       line-height: 1.6;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 850;
+      text-decoration: none;
+      box-shadow: 0 12px 24px rgba(0, 104, 240, 0.18);
+    }
+    .hero-cta:hover { background: var(--primary-strong); }
+    .hero-note {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
     }
     .trust {
       display: flex;
@@ -291,6 +379,13 @@
       line-height: 1.45;
     }
     .notice strong { display: block; margin-bottom: 2px; color: var(--ink); }
+    .input-trust {
+      margin: -2px 0 14px;
+      color: #126b49;
+      font-size: 14px;
+      font-weight: 750;
+      line-height: 1.45;
+    }
     .notice-mark {
       display: grid;
       place-items: center;
@@ -455,8 +550,10 @@
       .wrap { width: min(100% - 20px, 1180px); }
       .nav { align-items: flex-start; flex-direction: column; padding: 14px 0; gap: 10px; }
       .navlinks { width: 100%; overflow-x: auto; padding-bottom: 4px; }
-      .hero { padding-top: 32px; }
+      .hero { padding-top: 22px; }
       .lead { font-size: 17px; }
+      .hero-actions { margin-top: 16px; }
+      .hero-cta { width: 100%; }
       .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .grid, .actions, .metrics, .cards, .page-links, .tool-grid { grid-template-columns: 1fr; }
       .qr-stage { min-height: 310px; }
@@ -485,6 +582,10 @@
         <p class="eyebrow">Free static QR codes that never expire</p>
         <h1>Create free static QR codes that never expire.</h1>
         <p class="lead">Create QR codes for URLs, Wi-Fi networks, contact cards, events, email, SMS, WhatsApp, map locations, and CSV batches. Static codes are generated in your browser, download to your device, and keep working without a LaunchLab account.</p>
+        <div class="hero-actions">
+          <a class="hero-cta" href="#generator" id="heroStart">Create free QR code</a>
+          <span class="hero-note">Start with a URL, then download PNG or SVG when the preview looks right.</span>
+        </div>
         <div class="trust" aria-label="Key benefits">
           <span class="chip">Private browser generation</span>
           <span class="chip">Static codes never expire</span>
@@ -502,15 +603,16 @@
           <span><strong>Private static mode</strong>Your QR content is used in your browser to draw the code. Static downloads do not rely on our site, tracking links, or a paid redirect service.</span>
         </div>
         <div class="tabs" role="tablist" aria-label="QR code type">
-          <button class="tab" type="button" role="tab" aria-selected="true" data-type="url">URL</button>
-          <button class="tab" type="button" role="tab" aria-selected="false" data-type="wifi">Wi-Fi</button>
-          <button class="tab" type="button" role="tab" aria-selected="false" data-type="vcard">vCard</button>
-          <button class="tab" type="button" role="tab" aria-selected="false" data-type="event">Event</button>
-          <button class="tab" type="button" role="tab" aria-selected="false" data-type="more">More</button>
+          <button class="tab" id="tab-url" type="button" role="tab" aria-selected="true" aria-controls="panel-url" data-type="url">URL</button>
+          <button class="tab" id="tab-wifi" type="button" role="tab" aria-selected="false" aria-controls="panel-wifi" data-type="wifi" tabindex="-1">Wi-Fi</button>
+          <button class="tab" id="tab-vcard" type="button" role="tab" aria-selected="false" aria-controls="panel-vcard" data-type="vcard" tabindex="-1">vCard</button>
+          <button class="tab" id="tab-event" type="button" role="tab" aria-selected="false" aria-controls="panel-event" data-type="event" tabindex="-1">Event</button>
+          <button class="tab" id="tab-more" type="button" role="tab" aria-selected="false" aria-controls="panel-more" data-type="more" tabindex="-1">More</button>
         </div>
 
         <form id="qrForm">
-          <div class="grid type-fields" data-panel="url">
+          <p class="input-trust">Generated locally in your browser. We do not store your QR content.</p>
+          <div class="grid type-fields" id="panel-url" role="tabpanel" aria-labelledby="tab-url" data-panel="url">
             <div class="field full">
               <label for="urlInput">Destination URL</label>
               <input id="urlInput" type="url" value="https://example.com" placeholder="https://example.com">
@@ -525,7 +627,7 @@
             </div>
           </div>
 
-          <div class="grid type-fields hidden" data-panel="wifi">
+          <div class="grid type-fields hidden" id="panel-wifi" role="tabpanel" aria-labelledby="tab-wifi" data-panel="wifi">
             <div class="field">
               <label for="wifiName">Network name</label>
               <input id="wifiName" type="text" placeholder="Cafe Guest WiFi">
@@ -551,7 +653,7 @@
             </div>
           </div>
 
-          <div class="grid type-fields hidden" data-panel="vcard">
+          <div class="grid type-fields hidden" id="panel-vcard" role="tabpanel" aria-labelledby="tab-vcard" data-panel="vcard">
             <div class="field">
               <label for="fullName">Full name</label>
               <input id="fullName" type="text" placeholder="Alex Rivera">
@@ -574,7 +676,7 @@
             </div>
           </div>
 
-          <div class="grid type-fields hidden" data-panel="event">
+          <div class="grid type-fields hidden" id="panel-event" role="tabpanel" aria-labelledby="tab-event" data-panel="event">
             <div class="field full">
               <label for="eventTitle">Event title</label>
               <input id="eventTitle" type="text" placeholder="LaunchLab Workshop">
@@ -597,7 +699,7 @@
             </div>
           </div>
 
-          <div class="grid type-fields hidden" data-panel="more">
+          <div class="grid type-fields hidden" id="panel-more" role="tabpanel" aria-labelledby="tab-more" data-panel="more">
             <div class="field">
               <label for="moreType">Format</label>
               <select id="moreType">
@@ -1043,13 +1145,40 @@
       URL.revokeObjectURL(link.href);
     }
 
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        activeType = tab.dataset.type;
-        document.querySelectorAll('.tab').forEach(item => item.setAttribute('aria-selected', String(item === tab)));
-        document.querySelectorAll('.type-fields').forEach(panel => panel.classList.toggle('hidden', panel.dataset.panel !== activeType));
-        render();
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const panels = Array.from(document.querySelectorAll('.type-fields'));
+
+    function setActiveType(type, options = {}) {
+      activeType = type;
+      tabs.forEach(tab => {
+        const isActive = tab.dataset.type === activeType;
+        tab.setAttribute('aria-selected', String(isActive));
+        tab.tabIndex = isActive ? 0 : -1;
+        if (isActive && options.focusTab) tab.focus();
       });
+      panels.forEach(panel => panel.classList.toggle('hidden', panel.dataset.panel !== activeType));
+      render();
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        setActiveType(tab.dataset.type);
+      });
+      tab.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const currentIndex = tabs.indexOf(tab);
+        const nextIndex = event.key === 'Home'
+          ? 0
+          : event.key === 'End'
+            ? tabs.length - 1
+            : (currentIndex + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+        setActiveType(tabs[nextIndex].dataset.type, { focusTab: true });
+      });
+    });
+
+    document.querySelector('#heroStart').addEventListener('click', () => {
+      window.setTimeout(() => fields.urlInput.focus(), 250);
     });
 
     document.querySelectorAll('input, textarea, select').forEach(input => input.addEventListener('input', render));
@@ -1179,9 +1308,7 @@
           fields.errorLevel.value = 'Q';
           fields.eventTitle.value = fields.eventTitle.value || 'LaunchLab Event';
         }
-        document.querySelectorAll('.tab').forEach(item => item.setAttribute('aria-selected', String(item.dataset.type === activeType)));
-        document.querySelectorAll('.type-fields').forEach(panel => panel.classList.toggle('hidden', panel.dataset.panel !== activeType));
-        render();
+        setActiveType(activeType);
       });
     });
 
