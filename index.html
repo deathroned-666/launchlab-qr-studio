@@ -172,7 +172,7 @@
     }
     textarea { min-height: 92px; resize: vertical; line-height: 1.45; }
     input:focus, textarea:focus, select:focus, button:focus-visible {
-      outline: 3px solid rgba(15, 118, 110, 0.28);
+      outline: 3px solid rgba(0, 104, 240, 0.28);
       outline-offset: 2px;
     }
     .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
@@ -182,7 +182,7 @@
     .hidden { display: none !important; }
     .actions {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
       margin-top: 16px;
     }
@@ -258,6 +258,114 @@
     }
     .metric strong { display: block; font-size: 18px; }
     .metric span { color: var(--muted); font-size: 12px; }
+    .notice {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: start;
+      margin: 0 0 16px;
+      padding: 12px;
+      border: 1px solid #bde9ff;
+      border-radius: 8px;
+      background: #eaf7ff;
+      color: #06255f;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .notice strong { display: block; margin-bottom: 2px; color: var(--ink); }
+    .notice-mark {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: var(--ink);
+      font-weight: 900;
+    }
+    .template-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 0;
+    }
+    .template-btn {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--primary-strong);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 6px 11px;
+    }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 20px;
+      align-items: start;
+      margin-top: 24px;
+    }
+    .tool-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 18px;
+    }
+    .tool-panel h3 { margin: 0 0 10px; font-size: 20px; }
+    .checklist {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .checklist li {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 10px;
+      align-items: start;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .checklist li::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      box-shadow: inset 0 0 0 4px #fff;
+      border: 1px solid #9bdfff;
+    }
+    .result-box {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 8px;
+      background: #eaf7ff;
+      border: 1px solid #bde9ff;
+      color: #06255f;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+    .page-links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .page-link {
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      background: #fff;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .page-link strong { display: block; margin-bottom: 6px; }
+    .page-link span { display: block; color: var(--muted); font-size: 14px; line-height: 1.5; }
     .section {
       padding: 54px 0;
       border-top: 1px solid var(--line);
@@ -323,7 +431,7 @@
     @media (max-width: 900px) {
       .studio { grid-template-columns: 1fr; }
       .preview { position: static; }
-      .cards { grid-template-columns: 1fr 1fr; }
+      .cards, .page-links, .tool-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 640px) {
       .wrap { width: min(100% - 20px, 1180px); }
@@ -332,7 +440,7 @@
       .hero { padding-top: 32px; }
       .lead { font-size: 17px; }
       .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .grid, .actions, .metrics, .cards { grid-template-columns: 1fr; }
+      .grid, .actions, .metrics, .cards, .page-links, .tool-grid { grid-template-columns: 1fr; }
       .qr-stage { min-height: 310px; }
       .section h2 { font-size: 28px; }
       .table { display: block; overflow-x: auto; }
@@ -345,9 +453,9 @@
       <a class="brand" href="index.html" aria-label="LaunchLab QR Studio home"><img class="brand-logo" src="launchlab-qr-studio-logo.png" alt="LaunchLab QR Studio"></a>
       <div class="navlinks">
         <a href="#generator">Generator</a>
-        <a href="#print-guide">Print guide</a>
+        <a href="#print-tools">Print tools</a>
+        <a href="#qr-pages">QR pages</a>
         <a href="#privacy">Privacy</a>
-        <a href="#faq">FAQ</a>
         <a href="about.html">About</a>
       </div>
     </nav>
@@ -358,12 +466,12 @@
       <div>
         <p class="eyebrow">Free static QR codes that never expire</p>
         <h1>Create free static QR codes that never expire.</h1>
-        <p class="lead">Create QR codes for URLs, Wi-Fi networks, contact cards, email, SMS, WhatsApp, map locations, and CSV batches. Everything is generated in your browser for fast, private downloads.</p>
+        <p class="lead">Create QR codes for URLs, Wi-Fi networks, contact cards, events, email, SMS, WhatsApp, map locations, and CSV batches. Static codes are generated in your browser, download to your device, and keep working without a LaunchLab account.</p>
         <div class="trust" aria-label="Key benefits">
-          <span class="chip">Browser-based</span>
+          <span class="chip">Private browser generation</span>
+          <span class="chip">Static codes never expire</span>
           <span class="chip">PNG + SVG downloads</span>
-          <span class="chip">Logo and color controls</span>
-          <span class="chip">Print size guidance</span>
+          <span class="chip">Print-ready checks</span>
         </div>
       </div>
     </section>
@@ -371,6 +479,10 @@
     <section class="wrap studio" id="generator">
       <div class="panel controls">
         <h2>Create your QR code</h2>
+        <div class="notice">
+          <span class="notice-mark" aria-hidden="true">!</span>
+          <span><strong>Private static mode</strong>Your QR content is used in your browser to draw the code. Static downloads do not rely on our site, tracking links, or a paid redirect service.</span>
+        </div>
         <div class="tabs" role="tablist" aria-label="QR code type">
           <button class="tab" type="button" role="tab" aria-selected="true" data-type="url">URL</button>
           <button class="tab" type="button" role="tab" aria-selected="false" data-type="wifi">Wi-Fi</button>
@@ -521,6 +633,14 @@
             </div>
           </div>
         </form>
+        <div class="template-row" aria-label="Quick templates">
+          <button class="template-btn" type="button" data-template="business">Business card</button>
+          <button class="template-btn" type="button" data-template="flyer">Flyer</button>
+          <button class="template-btn" type="button" data-template="wifi">Wi-Fi sign</button>
+          <button class="template-btn" type="button" data-template="event">Event RSVP</button>
+          <button class="template-btn" type="button" id="saveBrand">Save brand kit</button>
+          <button class="template-btn" type="button" id="loadBrand">Load brand kit</button>
+        </div>
 
         <div class="field" style="margin-top: 18px;">
           <label for="batchInput">Batch CSV, one QR per line</label>
@@ -530,6 +650,7 @@
           <button class="btn" type="button" id="downloadPng">Download PNG</button>
           <button class="btn secondary" type="button" id="downloadSvg">Download SVG</button>
           <button class="btn warn" type="button" id="makeBatch">Make batch</button>
+          <button class="btn secondary" type="button" id="exportBatch">Export CSV</button>
         </div>
       </div>
 
@@ -548,10 +669,40 @@
       </aside>
     </section>
 
-    <section class="section" id="print-guide">
+    <section class="section" id="print-tools">
       <div class="wrap">
-        <h2>QR code print size guide</h2>
-        <p>A QR code should be large enough for the scanning distance and printed with a quiet margin around it. For most print jobs, start larger than you think and test the final material with two or three phone cameras.</p>
+        <h2>QR print tools</h2>
+        <p>A QR code should be large enough for the scanning distance and printed with a quiet margin around it. Use the calculator, then run the checklist before sending anything to print.</p>
+        <div class="tool-grid">
+          <div class="tool-panel">
+            <h3>Size calculator</h3>
+            <div class="grid">
+              <div class="field">
+                <label for="scanDistance">Expected scan distance</label>
+                <input id="scanDistance" type="number" min="6" value="24" inputmode="decimal">
+              </div>
+              <div class="field">
+                <label for="distanceUnit">Unit</label>
+                <select id="distanceUnit">
+                  <option value="in">inches</option>
+                  <option value="cm">centimeters</option>
+                </select>
+              </div>
+            </div>
+            <div class="result-box" id="sizeResult">Suggested printed QR size: 1.0 in / 25 mm minimum.</div>
+            <p>Rule of thumb: printed QR width should be at least one-tenth of the scanning distance, with a practical floor around 0.8 inches for business cards.</p>
+          </div>
+          <div class="tool-panel">
+            <h3>Print checklist</h3>
+            <ul class="checklist">
+              <li>Scan the final proof on at least two phones before printing in volume.</li>
+              <li>Keep a quiet margin around the QR code; do not crowd it with text or borders.</li>
+              <li>Use dark foreground on a light background and avoid glossy glare where possible.</li>
+              <li>Use SVG for print layouts and PNG only when your print tool requires it.</li>
+              <li>For printed campaigns, use a destination URL you control so you can redirect later if needed.</li>
+            </ul>
+          </div>
+        </div>
         <table class="table">
           <thead><tr><th>Use case</th><th>Suggested minimum</th><th>Practical advice</th></tr></thead>
           <tbody>
@@ -581,6 +732,33 @@
             <h3>Built for print</h3>
             <p>Warnings help catch low contrast, dense payloads, and sizing issues before you print.</p>
           </article>
+          <article class="card">
+            <h3>Local brand kit</h3>
+            <p>Save your preferred QR colors, error correction, and print preset locally on this device.</p>
+          </article>
+          <article class="card">
+            <h3>Reusable templates</h3>
+            <p>Start from common print workflows like business cards, flyers, Wi-Fi signs, and event RSVPs.</p>
+          </article>
+          <article class="card">
+            <h3>No upsell maze</h3>
+            <p>The interface stays focused on creating reliable static QR codes and downloading clean files.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="qr-pages">
+      <div class="wrap">
+        <h2>Focused QR tools and guides</h2>
+        <p>These pages give search visitors a direct answer for specific QR jobs while keeping the main generator simple.</p>
+        <div class="page-links">
+          <a class="page-link" href="wifi-qr-code-generator.html"><strong>Wi-Fi QR Code Generator</strong><span>Create guest network signs without typing long passwords.</span></a>
+          <a class="page-link" href="vcard-qr-code-generator.html"><strong>vCard QR Code Generator</strong><span>Share contact details from business cards, badges, and flyers.</span></a>
+          <a class="page-link" href="event-qr-code-generator.html"><strong>Event QR Code Generator</strong><span>Add event details to calendars from posters and invitations.</span></a>
+          <a class="page-link" href="qr-code-with-logo.html"><strong>QR Code With Logo</strong><span>Use brand colors and center labels without breaking scan reliability.</span></a>
+          <a class="page-link" href="bulk-qr-code-generator.html"><strong>Bulk QR Code Generator</strong><span>Create many QR codes from a simple line-by-line list.</span></a>
+          <a class="page-link" href="qr-code-size-guide.html"><strong>QR Code Size Guide</strong><span>Choose print sizes for business cards, flyers, menus, and posters.</span></a>
         </div>
       </div>
     </section>
@@ -641,7 +819,9 @@
       errorLevel: document.querySelector('#errorLevel'),
       printUse: document.querySelector('#printUse'),
       logoText: document.querySelector('#logoText'),
-      batchInput: document.querySelector('#batchInput')
+      batchInput: document.querySelector('#batchInput'),
+      scanDistance: document.querySelector('#scanDistance'),
+      distanceUnit: document.querySelector('#distanceUnit')
     };
 
     let activeType = 'url';
@@ -714,6 +894,14 @@
       return { card: '0.8 in', flyer: '1.2 in', poster: '4 in', menu: '1.6 in' }[printUse] || '1.2 in';
     }
 
+    function updateSizeCalculator() {
+      const distance = Math.max(Number(fields.scanDistance.value) || 0, 1);
+      const inches = fields.distanceUnit.value === 'cm' ? distance / 2.54 : distance;
+      const suggested = Math.max(inches / 10, 0.8);
+      const mm = suggested * 25.4;
+      document.querySelector('#sizeResult').textContent = `Suggested printed QR size: ${suggested.toFixed(1)} in / ${Math.round(mm)} mm minimum.`;
+    }
+
     function makeQrSvg(payload) {
       const qr = qrcode(0, fields.errorLevel.value);
       qr.addData(payload);
@@ -756,6 +944,7 @@
       status.textContent = message;
       document.querySelector('#charCount').textContent = String(payload.length);
       document.querySelector('#minSize').textContent = sizeHint(fields.printUse.value);
+      updateSizeCalculator();
     }
 
     function render() {
@@ -789,6 +978,7 @@
     });
 
     document.querySelectorAll('input, textarea, select').forEach(input => input.addEventListener('input', render));
+    document.querySelector('#distanceUnit').addEventListener('change', updateSizeCalculator);
     document.querySelector('#downloadSvg').addEventListener('click', () => download('static-qr-code.svg', new Blob([latestSvg], { type: 'image/svg+xml' })));
     document.querySelector('#downloadPng').addEventListener('click', () => {
       const img = new Image();
@@ -824,6 +1014,69 @@
         activeType = previousType;
       });
       render();
+    });
+
+    document.querySelector('#exportBatch').addEventListener('click', () => {
+      const lines = fields.batchInput.value.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+      const rows = ['label,value,filename'].concat(lines.map((line, index) => {
+        const safe = line.replace(/"/g, '""');
+        return `"QR ${index + 1}","${safe}","launchlab-qr-${index + 1}.svg"`;
+      }));
+      download('launchlab-qr-batch.csv', new Blob([rows.join('\n')], { type: 'text/csv' }));
+    });
+
+    document.querySelector('#saveBrand').addEventListener('click', () => {
+      const kit = {
+        darkColor: fields.darkColor.value,
+        lightColor: fields.lightColor.value,
+        errorLevel: fields.errorLevel.value,
+        printUse: fields.printUse.value,
+        logoText: fields.logoText.value
+      };
+      localStorage.setItem('launchlabQrBrandKit', JSON.stringify(kit));
+      const status = document.querySelector('#scanStatus');
+      status.className = 'status';
+      status.textContent = 'Brand kit saved on this device. Load it anytime from this browser.';
+    });
+
+    document.querySelector('#loadBrand').addEventListener('click', () => {
+      const kit = JSON.parse(localStorage.getItem('launchlabQrBrandKit') || '{}');
+      ['darkColor', 'lightColor', 'errorLevel', 'printUse', 'logoText'].forEach(key => {
+        if (kit[key] && fields[key]) fields[key].value = kit[key];
+      });
+      render();
+    });
+
+    document.querySelectorAll('[data-template]').forEach(button => {
+      button.addEventListener('click', () => {
+        const template = button.dataset.template;
+        if (template === 'business') {
+          activeType = 'vcard';
+          fields.printUse.value = 'card';
+          fields.errorLevel.value = 'Q';
+          fields.logoText.value = 'LL';
+        }
+        if (template === 'flyer') {
+          activeType = 'url';
+          fields.printUse.value = 'flyer';
+          fields.errorLevel.value = 'M';
+          fields.campaignSource.value = 'flyer';
+        }
+        if (template === 'wifi') {
+          activeType = 'wifi';
+          fields.printUse.value = 'menu';
+          fields.errorLevel.value = 'Q';
+        }
+        if (template === 'event') {
+          activeType = 'event';
+          fields.printUse.value = 'poster';
+          fields.errorLevel.value = 'Q';
+          fields.eventTitle.value = fields.eventTitle.value || 'LaunchLab Event';
+        }
+        document.querySelectorAll('.tab').forEach(item => item.setAttribute('aria-selected', String(item.dataset.type === activeType)));
+        document.querySelectorAll('.type-fields').forEach(panel => panel.classList.toggle('hidden', panel.dataset.panel !== activeType));
+        render();
+      });
     });
 
     window.addEventListener('load', render);
