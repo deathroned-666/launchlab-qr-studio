@@ -344,9 +344,23 @@
       { key: 'corporate', planId: 'P-3WD55804J4015973VNKBXZOI', name: 'Corporate' }
     ];
 
-    function showStatus(key, message) {
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      })[character]);
+    }
+
+    function showStatus(key, message, options = {}) {
       const status = document.querySelector(`#status-${key}`);
-      status.textContent = message;
+      if (options.html) {
+        status.innerHTML = message;
+      } else {
+        status.textContent = message;
+      }
       status.classList.add('is-visible');
     }
 
@@ -363,7 +377,13 @@
             return actions.subscription.create({ plan_id: plan.planId });
           },
           onApprove: function(data) {
-            showStatus(plan.key, `${plan.name} subscription approved. Subscription ID: ${data.subscriptionID}. Keep this ID, then open the dashboard to claim access.`);
+            const subscriptionId = escapeHtml(data.subscriptionID || '');
+            const dashboardUrl = `dashboard.html?subscriptionId=${encodeURIComponent(data.subscriptionID || '')}`;
+            showStatus(
+              plan.key,
+              `${plan.name} subscription approved. Subscription ID: <strong>${subscriptionId}</strong>. <a href="${dashboardUrl}">Open the dashboard to claim access</a>.`,
+              { html: true }
+            );
           },
           onError: function() {
             showStatus(plan.key, 'PayPal could not complete this subscription. Please try again or contact launchlab9@gmail.com.');

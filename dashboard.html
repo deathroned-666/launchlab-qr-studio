@@ -157,7 +157,13 @@
     const qrList = document.querySelector('#qrList');
     const createPanel = document.querySelector('#createPanel');
 
+    const params = new URLSearchParams(window.location.search);
+    const incomingSubscriptionId = params.get('subscriptionId') || '';
     if (state.email) document.querySelector('#email').value = state.email;
+    if (incomingSubscriptionId) {
+      document.querySelector('#subscriptionId').value = incomingSubscriptionId;
+      setStatus('Subscription ID detected from PayPal. Enter the PayPal subscriber email, then unlock the dashboard.');
+    }
 
     function setStatus(message, isBad = false) {
       claimStatus.textContent = message;
