@@ -258,6 +258,24 @@
     }
     .metric strong { display: block; font-size: 18px; }
     .metric span { color: var(--muted); font-size: 12px; }
+    .proof {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .proof-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .proof-item strong { display: block; color: var(--ink); font-size: 14px; }
+    .proof-pass strong { color: var(--good); }
+    .proof-warn strong { color: var(--warn); }
+    .proof-fail strong { color: var(--bad); }
     .notice {
       display: grid;
       grid-template-columns: 28px 1fr;
@@ -585,9 +603,11 @@
               <select id="moreType">
                 <option value="text">Plain text</option>
                 <option value="email">Email</option>
+                <option value="phone">Phone</option>
                 <option value="sms">SMS</option>
                 <option value="whatsapp">WhatsApp</option>
                 <option value="geo">Map location</option>
+                <option value="review">Google review link</option>
               </select>
             </div>
             <div class="field">
@@ -631,9 +651,26 @@
               <label for="logoText">Center label or initials</label>
               <input id="logoText" type="text" maxlength="8" placeholder="Optional, e.g. ACME">
             </div>
+            <div class="field">
+              <label for="pngSize">PNG size</label>
+              <select id="pngSize">
+                <option value="1000">1000 px</option>
+                <option value="512">512 px</option>
+                <option value="2000">2000 px</option>
+                <option value="3000">3000 px</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="logoFile">Logo image</label>
+              <input id="logoFile" type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp">
+            </div>
           </div>
         </form>
         <div class="template-row" aria-label="Quick templates">
+          <button class="template-btn" type="button" data-preset="classic">Classic Navy</button>
+          <button class="template-btn" type="button" data-preset="blue">Electric Blue</button>
+          <button class="template-btn" type="button" data-preset="cyan">Cyan Accent</button>
+          <button class="template-btn" type="button" data-preset="black">Print Safe Black</button>
           <button class="template-btn" type="button" data-template="business">Business card</button>
           <button class="template-btn" type="button" data-template="flyer">Flyer</button>
           <button class="template-btn" type="button" data-template="wifi">Wi-Fi sign</button>
@@ -664,6 +701,12 @@
           <div class="metric"><strong id="charCount">19</strong><span>characters</span></div>
           <div class="metric"><strong id="minSize">0.8 in</strong><span>suggested minimum</span></div>
           <div class="metric"><strong id="qrVersion">Auto</strong><span>QR density</span></div>
+        </div>
+        <div class="proof" id="proofPanel">
+          <div class="proof-item proof-pass"><strong id="proofContrast">Contrast: Pass</strong><span>Dark on light is safest.</span></div>
+          <div class="proof-item proof-pass"><strong id="proofDensity">Density: Low</strong><span>Shorter codes scan faster.</span></div>
+          <div class="proof-item proof-pass"><strong id="proofLogo">Logo: Safe</strong><span>Use high recovery for logos.</span></div>
+          <div class="proof-item proof-pass"><strong id="proofExport">Export: SVG</strong><span>Recommended for print.</span></div>
         </div>
         <div class="batch-output" id="batchOutput"></div>
       </aside>
@@ -731,6 +774,10 @@
           <article class="card">
             <h3>Built for print</h3>
             <p>Warnings help catch low contrast, dense payloads, and sizing issues before you print.</p>
+          </article>
+          <article class="card">
+            <h3>Proof check panel</h3>
+            <p>Contrast, density, logo safety, and export guidance update as you design.</p>
           </article>
           <article class="card">
             <h3>Local brand kit</h3>
@@ -819,6 +866,8 @@
       errorLevel: document.querySelector('#errorLevel'),
       printUse: document.querySelector('#printUse'),
       logoText: document.querySelector('#logoText'),
+      pngSize: document.querySelector('#pngSize'),
+      logoFile: document.querySelector('#logoFile'),
       batchInput: document.querySelector('#batchInput'),
       scanDistance: document.querySelector('#scanDistance'),
       distanceUnit: document.querySelector('#distanceUnit')
@@ -826,6 +875,7 @@
 
     let activeType = 'url';
     let latestSvg = '';
+    let uploadedLogo = '';
 
     function escapeWifi(value) {
       return String(value).replace(/[\\;,":]/g, match => '\\' + match);
@@ -875,9 +925,11 @@
         const target = fields.moreTarget.value.trim();
         const body = encodeURIComponent(fields.moreBody.value.trim());
         if (fields.moreType.value === 'email') return `mailto:${target}?body=${body}`;
+        if (fields.moreType.value === 'phone') return `tel:${target}`;
         if (fields.moreType.value === 'sms') return `SMSTO:${target}:${fields.moreBody.value.trim()}`;
         if (fields.moreType.value === 'whatsapp') return `https://wa.me/${target.replace(/\D/g, '')}?text=${body}`;
         if (fields.moreType.value === 'geo') return `geo:${target}`;
+        if (fields.moreType.value === 'review') return target || 'https://www.google.com/search?q=review';
         return fields.moreBody.value.trim() || 'Free QR code made with LaunchLab QR Studio';
       }
       return withUtm(fields.urlInput.value);
@@ -917,12 +969,35 @@
           if (qr.isDark(row, col)) rects += `<rect x="${col + quiet}" y="${row + quiet}" width="1" height="1" fill="${dark}"/>`;
         }
       }
-      const logo = fields.logoText.value.trim()
-        ? `<rect x="${total / 2 - 4.8}" y="${total / 2 - 3.2}" width="9.6" height="6.4" rx="1.2" fill="${light}"/><text x="${total / 2}" y="${total / 2 + 1.35}" text-anchor="middle" font-size="2.8" font-family="Arial, sans-serif" font-weight="700" fill="${dark}">${fields.logoText.value.trim().replace(/[<>&]/g, '')}</text>`
-        : '';
+      let logo = '';
+      if (uploadedLogo) {
+        logo = `<rect x="${total / 2 - 5.2}" y="${total / 2 - 5.2}" width="10.4" height="10.4" rx="1.6" fill="${light}"/><image href="${uploadedLogo}" x="${total / 2 - 4.2}" y="${total / 2 - 4.2}" width="8.4" height="8.4" preserveAspectRatio="xMidYMid meet"/>`;
+      } else if (fields.logoText.value.trim()) {
+        logo = `<rect x="${total / 2 - 4.8}" y="${total / 2 - 3.2}" width="9.6" height="6.4" rx="1.2" fill="${light}"/><text x="${total / 2}" y="${total / 2 + 1.35}" text-anchor="middle" font-size="2.8" font-family="Arial, sans-serif" font-weight="700" fill="${dark}">${fields.logoText.value.trim().replace(/[<>&]/g, '')}</text>`;
+      }
       latestSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${total} ${total}" shape-rendering="crispEdges" role="img" aria-label="Generated QR code">${rects}${logo}</svg>`;
       document.querySelector('#qrSvg').innerHTML = latestSvg;
       document.querySelector('#qrVersion').textContent = `${cells} x ${cells}`;
+      updateProofPanel(payload, cells);
+    }
+
+    function setProof(id, title, text, state) {
+      const el = document.querySelector(id);
+      const parent = el.parentElement;
+      parent.className = `proof-item proof-${state}`;
+      el.textContent = title;
+      parent.querySelector('span').textContent = text;
+    }
+
+    function updateProofPanel(payload, cells) {
+      const ratio = contrast(fields.darkColor.value, fields.lightColor.value);
+      setProof('#proofContrast', ratio >= 4.5 ? 'Contrast: Pass' : 'Contrast: Fix', ratio >= 4.5 ? 'Good contrast for scanning.' : 'Use a darker foreground or lighter background.', ratio >= 4.5 ? 'pass' : 'fail');
+      const density = payload.length > 180 || cells > 37 ? 'High' : payload.length > 90 || cells > 29 ? 'Medium' : 'Low';
+      setProof('#proofDensity', `Density: ${density}`, density === 'High' ? 'Shorten content or print larger.' : 'Payload size is manageable.', density === 'High' ? 'warn' : 'pass');
+      const hasLogo = uploadedLogo || fields.logoText.value.trim();
+      const logoSafe = !hasLogo || ['Q', 'H'].includes(fields.errorLevel.value);
+      setProof('#proofLogo', logoSafe ? 'Logo: Safe' : 'Logo: Warning', logoSafe ? 'Logo settings are print friendly.' : 'Use Logo friendly or Maximum recovery.', logoSafe ? 'pass' : 'warn');
+      setProof('#proofExport', 'Export: SVG', Number(fields.pngSize.value) >= 2000 ? 'High-res PNG also available.' : 'Use SVG for print layouts.', 'pass');
     }
 
     function updateWarnings(payload) {
@@ -979,6 +1054,21 @@
 
     document.querySelectorAll('input, textarea, select').forEach(input => input.addEventListener('input', render));
     document.querySelector('#distanceUnit').addEventListener('change', updateSizeCalculator);
+    document.querySelector('#logoFile').addEventListener('change', () => {
+      const file = fields.logoFile.files && fields.logoFile.files[0];
+      if (!file) {
+        uploadedLogo = '';
+        render();
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        uploadedLogo = reader.result;
+        fields.errorLevel.value = ['Q', 'H'].includes(fields.errorLevel.value) ? fields.errorLevel.value : 'Q';
+        render();
+      };
+      reader.readAsDataURL(file);
+    });
     document.querySelector('#downloadSvg').addEventListener('click', () => download('static-qr-code.svg', new Blob([latestSvg], { type: 'image/svg+xml' })));
     document.querySelector('#downloadPng').addEventListener('click', () => {
       const img = new Image();
@@ -986,11 +1076,12 @@
       const url = URL.createObjectURL(svgBlob);
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        canvas.width = 1200;
-        canvas.height = 1200;
+        const size = Number(fields.pngSize.value) || 1000;
+        canvas.width = size;
+        canvas.height = size;
         const ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(img, 0, 0, 1200, 1200);
+        ctx.drawImage(img, 0, 0, size, size);
         canvas.toBlob(blob => download('static-qr-code.png', blob), 'image/png');
         URL.revokeObjectURL(url);
       };
@@ -1037,6 +1128,21 @@
       const status = document.querySelector('#scanStatus');
       status.className = 'status';
       status.textContent = 'Brand kit saved on this device. Load it anytime from this browser.';
+    });
+
+    document.querySelectorAll('[data-preset]').forEach(button => {
+      button.addEventListener('click', () => {
+        const presets = {
+          classic: ['#020826', '#ffffff'],
+          blue: ['#0068f0', '#ffffff'],
+          cyan: ['#003fe0', '#eaf7ff'],
+          black: ['#111111', '#ffffff']
+        };
+        const [dark, light] = presets[button.dataset.preset];
+        fields.darkColor.value = dark;
+        fields.lightColor.value = light;
+        render();
+      });
     });
 
     document.querySelector('#loadBrand').addEventListener('click', () => {
