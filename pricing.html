@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pricing - LaunchLab QR Studio</title>
+  <meta name="description" content="LaunchLab QR Studio pricing. Static QR codes are free forever. Upgrade when you need editable, trackable, managed dynamic QR campaigns.">
+  <link rel="canonical" href="https://launchlab-qr-studio.arbietapel.workers.dev/pricing.html">
+  <style>
+    :root {
+      --ink: #020826;
+      --muted: #4c5d7a;
+      --paper: #f7fbff;
+      --panel: #ffffff;
+      --line: #dbe7f5;
+      --field: #eef6ff;
+      --primary: #0068f0;
+      --primary-strong: #003fe0;
+      --cyan: #00b8f0;
+      --good: #126b49;
+      --warn-bg: #fff8ec;
+      --warn-text: #7c3d08;
+      --shadow: 0 18px 48px rgba(2, 8, 38, 0.12);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(0, 184, 240, 0.12), transparent 360px),
+        var(--paper);
+    }
+    a { color: var(--primary-strong); }
+    .wrap { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { text-decoration: none; }
+    .brand img { width: 238px; max-width: 58vw; height: auto; display: block; }
+    .navlinks { display: flex; align-items: center; gap: 18px; font-size: 14px; }
+    .navlinks a { color: var(--muted); text-decoration: none; font-weight: 750; }
+    .hero {
+      padding: 44px 0 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+      gap: 28px;
+      align-items: end;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--primary-strong);
+      font-size: 14px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(34px, 6vw, 60px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+    .lead {
+      max-width: 720px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.6;
+    }
+    .summary {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    .summary strong { display: block; margin-bottom: 8px; font-size: 18px; }
+    .summary p { margin: 0; color: var(--muted); line-height: 1.55; }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin: 24px auto 34px;
+    }
+    .plan {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 18px;
+      box-shadow: 0 10px 28px rgba(2, 8, 38, 0.08);
+    }
+    .plan.featured { border-color: #9bdfff; box-shadow: var(--shadow); }
+    .plan h2 { margin: 0; font-size: 22px; }
+    .price { display: flex; align-items: baseline; gap: 4px; margin: 0; }
+    .price strong { font-size: 34px; letter-spacing: 0; }
+    .price span { color: var(--muted); font-weight: 750; }
+    .usd-note { margin: -8px 0 0; color: var(--muted); font-size: 13px; }
+    .plan p { margin: 0; color: var(--muted); line-height: 1.55; }
+    .plan ul {
+      display: grid;
+      gap: 9px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+    .plan li {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+    .plan li::before {
+      content: "";
+      width: 12px;
+      height: 12px;
+      margin-top: 4px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+    }
+    .paypal-slot {
+      min-height: 106px;
+      display: grid;
+      align-items: center;
+    }
+    .status {
+      display: none;
+      margin-top: 6px;
+      padding: 11px;
+      border-radius: 8px;
+      border: 1px solid #bde9ff;
+      background: #eaf7ff;
+      color: #06255f;
+      font-size: 13px;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+    .status.is-visible { display: block; }
+    .notice {
+      margin: 0 auto 44px;
+      border: 1px solid #f3d5a2;
+      border-radius: 8px;
+      background: var(--warn-bg);
+      color: var(--warn-text);
+      padding: 16px;
+      line-height: 1.6;
+    }
+    .compare {
+      margin: 0 auto 54px;
+      border-top: 1px solid var(--line);
+      padding-top: 34px;
+    }
+    .compare h2 { margin: 0 0 12px; font-size: 30px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { padding: 13px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: #06255f; background: #eaf7ff; }
+    td { color: var(--muted); }
+    footer { padding: 34px 0 44px; color: var(--muted); background: #eef6ff; border-top: 1px solid var(--line); }
+    footer img { width: min(420px, 92vw); height: auto; display: block; margin-bottom: 16px; }
+    footer a { color: var(--primary-strong); }
+    @media (max-width: 1000px) {
+      .pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hero { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .wrap { width: min(100% - 20px, 1180px); }
+      nav { align-items: flex-start; flex-direction: column; padding: 14px 0; gap: 10px; }
+      .navlinks { width: 100%; overflow-x: auto; padding-bottom: 4px; }
+      .hero { padding-top: 26px; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .price strong { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="wrap" aria-label="Main navigation">
+    <a class="brand" href="index.html" aria-label="LaunchLab QR Studio home"><img src="launchlab-qr-studio-logo.png" alt="LaunchLab QR Studio"></a>
+    <div class="navlinks">
+      <a href="index.html#generator">Generator</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="index.html#qr-pages">Guides</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="wrap hero">
+      <div>
+        <p class="eyebrow">Free static QR codes, paid dynamic management</p>
+        <h1>Upgrade when you need editable, trackable QR campaigns.</h1>
+        <p class="lead">LaunchLab QR Studio keeps static QR generation free. Paid plans are for dynamic QR codes: saved campaigns, editable destinations after printing, scan analytics, and managed growth.</p>
+      </div>
+      <aside class="summary">
+        <strong>Fair by design</strong>
+        <p>One-off static QR codes do not count toward paid limits. Only saved dynamic QR codes count toward plan usage.</p>
+      </aside>
+    </section>
+
+    <section class="wrap pricing-grid" aria-label="LaunchLab QR Studio subscription plans">
+      <article class="plan">
+        <h2>Personal</h2>
+        <p class="price"><strong>PHP 399</strong><span>/mo</span></p>
+        <p class="usd-note">USD reference: $7/month</p>
+        <p>For individuals, freelancers, and small recurring print needs.</p>
+        <ul>
+          <li>25 dynamic QR codes</li>
+          <li>Editable destinations</li>
+          <li>Saved QR dashboard support</li>
+          <li>Scan analytics support</li>
+          <li>Unlimited static QR codes remain free</li>
+        </ul>
+        <div class="paypal-slot" id="paypal-button-container-personal"></div>
+        <div class="status" id="status-personal" role="status"></div>
+      </article>
+
+      <article class="plan featured">
+        <h2>Standard</h2>
+        <p class="price"><strong>PHP 1,099</strong><span>/mo</span></p>
+        <p class="usd-note">USD reference: $19/month</p>
+        <p>For small businesses running QR codes across menus, flyers, signs, and cards.</p>
+        <ul>
+          <li>100 dynamic QR codes</li>
+          <li>Campaign folders and tags support</li>
+          <li>Editable destinations</li>
+          <li>Scan analytics support</li>
+          <li>Unlimited static QR codes remain free</li>
+        </ul>
+        <div class="paypal-slot" id="paypal-button-container-standard"></div>
+        <div class="status" id="status-standard" role="status"></div>
+      </article>
+
+      <article class="plan">
+        <h2>Business</h2>
+        <p class="price"><strong>PHP 2,799</strong><span>/mo</span></p>
+        <p class="usd-note">USD reference: $49/month</p>
+        <p>For agencies, local marketers, and operators managing multiple campaigns.</p>
+        <ul>
+          <li>300 dynamic QR codes</li>
+          <li>Bulk dynamic QR support</li>
+          <li>Branded templates support</li>
+          <li>Team-ready campaign workflow</li>
+          <li>Unlimited static QR codes remain free</li>
+        </ul>
+        <div class="paypal-slot" id="paypal-button-container-business"></div>
+        <div class="status" id="status-business" role="status"></div>
+      </article>
+
+      <article class="plan">
+        <h2>Corporate</h2>
+        <p class="price"><strong>PHP 8,499</strong><span>/mo</span></p>
+        <p class="usd-note">USD reference: $149/month</p>
+        <p>For teams, franchises, and larger managed QR programs.</p>
+        <ul>
+          <li>1,000 dynamic QR codes</li>
+          <li>Team access support</li>
+          <li>Custom domain support</li>
+          <li>Future API access</li>
+          <li>Unlimited static QR codes remain free</li>
+        </ul>
+        <div class="paypal-slot" id="paypal-button-container-corporate"></div>
+        <div class="status" id="status-corporate" role="status"></div>
+      </article>
+    </section>
+
+    <section class="wrap notice">
+      <strong>Current rollout note:</strong> static QR generation works instantly with no account. Dynamic QR management requires account setup and backend enforcement; paid subscribers should contact <a href="mailto:launchlab9@gmail.com">launchlab9@gmail.com</a> with their PayPal subscription ID while the dashboard rollout is completed.
+    </section>
+
+    <section class="wrap compare">
+      <h2>What stays free vs. what becomes managed</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Free static QR</th>
+              <th>Paid dynamic QR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>QR generation</td>
+              <td>Unlimited static QR codes</td>
+              <td>Saved dynamic QR codes by plan limit</td>
+            </tr>
+            <tr>
+              <td>Editing after print</td>
+              <td>No, static codes contain the final destination</td>
+              <td>Yes, change the destination behind the dynamic short link</td>
+            </tr>
+            <tr>
+              <td>Downloads</td>
+              <td>PNG and SVG downloads</td>
+              <td>PNG/SVG plus managed campaign records</td>
+            </tr>
+            <tr>
+              <td>Analytics</td>
+              <td>No tracking by default</td>
+              <td>Scan analytics support for campaigns</td>
+            </tr>
+            <tr>
+              <td>Best for</td>
+              <td>Menus, Wi-Fi signs, vCards, events, flyers, labels</td>
+              <td>Campaigns, agencies, changing destinations, reporting</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <img src="launchlab-qr-studio-logo.png" alt="LaunchLab QR Studio">
+      <div>LaunchLab QR Studio is free forever for static QR codes. <a href="index.html#generator">Generator</a> | <a href="pricing.html">Pricing</a> | <a href="privacy.html">Privacy</a> | <a href="contact.html">Contact</a> | <a href="about.html">About</a></div>
+    </div>
+  </footer>
+
+  <script src="https://www.paypal.com/sdk/js?client-id=BAAjq8c-6Fm19THi4WYd5K0T3yAfKnVOWMog1n58hvIFh1TYSl9FzDAKG0LtqMSCY4EbGFlhdpvirGlVFk&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+  <script>
+    const plans = [
+      { key: 'personal', planId: 'P-4VK74641CF049613NNKBXX5Q', name: 'Personal' },
+      { key: 'standard', planId: 'P-3XX127125D482264LNKBXYRQ', name: 'Standard' },
+      { key: 'business', planId: 'P-6DG65191VW6148735NKBXZCA', name: 'Business' },
+      { key: 'corporate', planId: 'P-3WD55804J4015973VNKBXZOI', name: 'Corporate' }
+    ];
+
+    function showStatus(key, message) {
+      const status = document.querySelector(`#status-${key}`);
+      status.textContent = message;
+      status.classList.add('is-visible');
+    }
+
+    if (window.paypal) {
+      plans.forEach(plan => {
+        paypal.Buttons({
+          style: {
+            shape: 'pill',
+            color: 'blue',
+            layout: 'vertical',
+            label: 'subscribe'
+          },
+          createSubscription: function(data, actions) {
+            return actions.subscription.create({ plan_id: plan.planId });
+          },
+          onApprove: function(data) {
+            showStatus(plan.key, `${plan.name} subscription approved. Subscription ID: ${data.subscriptionID}. Please keep this ID for your records.`);
+          },
+          onError: function() {
+            showStatus(plan.key, 'PayPal could not complete this subscription. Please try again or contact launchlab9@gmail.com.');
+          }
+        }).render(`#paypal-button-container-${plan.key}`);
+      });
+    } else {
+      plans.forEach(plan => {
+        showStatus(plan.key, 'PayPal checkout did not load. Please refresh the page or try again later.');
+      });
+    }
+  </script>
+</body>
+</html>
