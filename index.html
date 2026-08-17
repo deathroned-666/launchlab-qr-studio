@@ -136,8 +136,27 @@
         var(--panel);
       box-shadow: inset 0 0 0 2px var(--ink);
     }
-    .navlinks { display: flex; align-items: center; gap: 18px; font-size: 14px; }
-    .navlinks a { color: var(--muted); text-decoration: none; }
+    .navlinks { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 760; }
+    .navlinks a {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 11px;
+      border-radius: 8px;
+      color: #24395f;
+      text-decoration: none;
+      transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
+    }
+    .navlinks a:hover, .navlinks a:focus-visible {
+      background: #eaf7ff;
+      color: var(--primary-strong);
+      box-shadow: inset 0 -2px 0 var(--cyan);
+    }
+    .navlinks a[aria-current="page"] {
+      background: #dff5ff;
+      color: var(--primary-strong);
+      box-shadow: inset 0 -2px 0 var(--primary);
+    }
     .hero {
       padding: 36px 0 18px;
       display: grid;

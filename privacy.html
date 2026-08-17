@@ -14,7 +14,9 @@
     h1 { margin: 44px 0 16px; font-size: 42px; letter-spacing: 0; }
     h2 { margin-top: 32px; }
     p, li { color: #4c5d7a; line-height: 1.7; }
-    nav a:not(.brand) { color: #003fe0; }
+    nav span { display: flex; align-items: center; gap: 6px; color: #4c5d7a; font-size: 14px; font-weight: 760; }
+    nav a:not(.brand) { min-height: 38px; display: inline-flex; align-items: center; padding: 0 11px; border-radius: 8px; color: #24395f; text-decoration: none; }
+    nav a:not(.brand):hover, nav a:not(.brand):focus-visible { background: #eaf7ff; color: #003fe0; box-shadow: inset 0 -2px 0 #00b8f0; }
     .brand { text-decoration: none; }
     .brand img { width: 238px; max-width: 58vw; height: auto; display: block; }
     footer { margin-top: 48px; padding: 34px max(16px, calc((100vw - 820px) / 2)); background: #eef6ff; color: #4c5d7a; border-top: 1px solid #dbe7f5; }
