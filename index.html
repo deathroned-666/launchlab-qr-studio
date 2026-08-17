@@ -43,8 +43,8 @@
       position: sticky;
       top: 0;
       z-index: 5;
-      border-bottom: 1px solid rgba(223, 230, 223, 0.9);
-      background: rgba(248, 250, 247, 0.9);
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+      background: rgba(2, 6, 23, 0.94);
       backdrop-filter: blur(16px);
     }
     .nav {
@@ -60,7 +60,9 @@
       gap: 12px;
       font-weight: 800;
       letter-spacing: 0;
+      text-decoration: none;
     }
+    .brand-logo { width: 238px; max-width: 58vw; height: auto; display: block; }
     .mark {
       width: 36px;
       height: 36px;
@@ -72,7 +74,7 @@
       box-shadow: inset 0 0 0 2px var(--ink);
     }
     .navlinks { display: flex; align-items: center; gap: 18px; font-size: 14px; }
-    .navlinks a { color: var(--muted); text-decoration: none; }
+    .navlinks a { color: #dbeafe; text-decoration: none; }
     .hero {
       padding: 54px 0 30px;
       display: grid;
@@ -290,7 +292,10 @@
       vertical-align: top;
     }
     .table th { background: #edf7f4; color: #173d38; }
-    footer { padding: 32px 0 48px; color: var(--muted); }
+    footer { padding: 36px 0 48px; color: #cbd5e1; background: #020617; }
+    footer a { color: #93c5fd; }
+    .footer-inner { display: grid; gap: 18px; justify-items: start; }
+    .footer-logo { width: min(440px, 92vw); height: auto; display: block; }
     .batch-output {
       margin-top: 12px;
       display: grid;
@@ -331,7 +336,7 @@
 <body>
   <header>
     <nav class="wrap nav" aria-label="Main navigation">
-      <div class="brand"><span class="mark" aria-hidden="true"></span><span>LaunchLab QR Studio</span></div>
+      <a class="brand" href="index.html" aria-label="LaunchLab QR Studio home"><img class="brand-logo" src="launchlab-qr-studio-logo.png" alt="LaunchLab QR Studio"></a>
       <div class="navlinks">
         <a href="#generator">Generator</a>
         <a href="#print-guide">Print guide</a>
@@ -572,7 +577,10 @@
   </main>
 
   <footer>
-    <div class="wrap">LaunchLab QR Studio is a free QR code utility for creating reliable, print-ready static QR codes. <a href="privacy.html">Privacy</a> · <a href="contact.html">Contact</a> · <a href="about.html">About</a></div>
+    <div class="wrap footer-inner">
+      <img class="footer-logo" src="launchlab-qr-studio-logo.png" alt="LaunchLab QR Studio">
+      <div>LaunchLab QR Studio is a free QR code utility for creating reliable, print-ready static QR codes. <a href="privacy.html">Privacy</a> · <a href="contact.html">Contact</a> · <a href="about.html">About</a></div>
+    </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
