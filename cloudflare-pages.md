@@ -30,7 +30,7 @@ Use the manual upload first, then move to GitHub-connected deploys once the firs
 
 ## Step 3: Before AdSense
 
-1. Replace the placeholder owner and email on `contact.html`.
+1. Confirm the public contact details on `contact.html` are still current.
 2. Add at least five focused content/tool pages.
 3. Add a real domain.
 4. Add a complete Privacy Policy with any analytics or ad providers you use.

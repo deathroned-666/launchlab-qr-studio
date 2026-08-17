@@ -31,8 +31,7 @@ Git-based path:
 
 ## Before applying for AdSense
 
-- Replace the placeholder contact details in `contact.html`.
-- Add a real site owner or business name.
+- Confirm the public contact details in `contact.html` are still current.
 - Add more original support pages, especially:
   - Wi-Fi QR Code Generator
   - vCard QR Code Generator
