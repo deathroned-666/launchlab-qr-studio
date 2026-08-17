@@ -29,6 +29,18 @@ Git-based path:
 5. Use `/` as the output directory.
 6. Deploy.
 
+## Dynamic QR subscriptions
+
+The project now includes Cloudflare Pages Functions for paid dynamic QR management:
+
+- PayPal subscription webhook: `/api/paypal/webhook`
+- Subscriber claim API: `/api/subscription/claim`
+- Dynamic QR API: `/api/qrs`
+- Redirect route: `/r/{code}`
+- Subscriber dashboard: `dashboard.html`
+
+See `dynamic-qr-setup.md` before turning the dashboard on for customers. It requires a Cloudflare D1 binding named `QR_DB`, a `SESSION_SECRET`, and PayPal REST app webhook credentials.
+
 ## Before applying for AdSense
 
 - Confirm the public contact details in `contact.html` are still current.

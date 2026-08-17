@@ -196,6 +196,7 @@
     <div class="navlinks">
       <a href="index.html#generator">Generator</a>
       <a href="pricing.html">Pricing</a>
+      <a href="dashboard.html">Dashboard</a>
       <a href="index.html#qr-pages">Guides</a>
       <a href="contact.html">Contact</a>
     </div>
@@ -281,7 +282,7 @@
     </section>
 
     <section class="wrap notice">
-      <strong>Current rollout note:</strong> static QR generation works instantly with no account. Dynamic QR management requires account setup and backend enforcement; paid subscribers should contact <a href="mailto:launchlab9@gmail.com">launchlab9@gmail.com</a> with their PayPal subscription ID while the dashboard rollout is completed.
+      <strong>Current rollout note:</strong> static QR generation works instantly with no account. After subscribing, keep your PayPal subscription ID and open the <a href="dashboard.html">dynamic QR dashboard</a> to claim access once PayPal activates the plan.
     </section>
 
     <section class="wrap compare">
@@ -330,7 +331,7 @@
   <footer>
     <div class="wrap">
       <img src="launchlab-qr-studio-logo.png" alt="LaunchLab QR Studio">
-      <div>LaunchLab QR Studio is free forever for static QR codes. <a href="index.html#generator">Generator</a> | <a href="pricing.html">Pricing</a> | <a href="privacy.html">Privacy</a> | <a href="contact.html">Contact</a> | <a href="about.html">About</a></div>
+      <div>LaunchLab QR Studio is free forever for static QR codes. <a href="index.html#generator">Generator</a> | <a href="pricing.html">Pricing</a> | <a href="dashboard.html">Dashboard</a> | <a href="privacy.html">Privacy</a> | <a href="contact.html">Contact</a> | <a href="about.html">About</a></div>
     </div>
   </footer>
 
@@ -362,7 +363,7 @@
             return actions.subscription.create({ plan_id: plan.planId });
           },
           onApprove: function(data) {
-            showStatus(plan.key, `${plan.name} subscription approved. Subscription ID: ${data.subscriptionID}. Please keep this ID for your records.`);
+            showStatus(plan.key, `${plan.name} subscription approved. Subscription ID: ${data.subscriptionID}. Keep this ID, then open the dashboard to claim access.`);
           },
           onError: function() {
             showStatus(plan.key, 'PayPal could not complete this subscription. Please try again or contact launchlab9@gmail.com.');
