@@ -10,20 +10,21 @@
   <meta property="og:description" content="A free privacy-first QR code generator for print-ready static QR codes that never expire.">
   <style>
     :root {
-      --ink: #17211d;
-      --muted: #60706a;
-      --paper: #f8faf7;
+      --ink: #020826;
+      --muted: #4c5d7a;
+      --paper: #f7fbff;
       --panel: #ffffff;
-      --line: #dfe6df;
-      --field: #f1f6f2;
-      --primary: #0f766e;
-      --primary-strong: #0b4f4a;
-      --accent: #c2410c;
+      --line: #dbe7f5;
+      --field: #eef6ff;
+      --primary: #0068f0;
+      --primary-strong: #003fe0;
+      --cyan: #00b8f0;
+      --accent: #ffd21f;
       --gold: #b7791f;
-      --good: #15803d;
-      --warn: #b45309;
+      --good: #126b49;
+      --warn: #b7791f;
       --bad: #b91c1c;
-      --shadow: 0 18px 48px rgba(23, 33, 29, 0.12);
+      --shadow: 0 18px 48px rgba(2, 8, 38, 0.12);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
@@ -33,7 +34,7 @@
       margin: 0;
       color: var(--ink);
       background:
-        linear-gradient(180deg, rgba(15, 118, 110, 0.08), transparent 360px),
+        linear-gradient(180deg, rgba(0, 184, 240, 0.12), transparent 360px),
         var(--paper);
     }
     a { color: var(--primary-strong); }
@@ -69,7 +70,7 @@
       border-radius: 8px;
       background:
         linear-gradient(90deg, var(--ink) 8px, transparent 8px 14px, var(--ink) 14px 22px, transparent 22px),
-        linear-gradient(var(--ink) 8px, transparent 8px 14px, var(--primary) 14px 22px, transparent 22px),
+        linear-gradient(var(--ink) 8px, transparent 8px 14px, var(--cyan) 14px 22px, transparent 22px),
         var(--panel);
       box-shadow: inset 0 0 0 2px var(--ink);
     }
@@ -138,7 +139,7 @@
     .preview { padding: 18px; position: sticky; top: 88px; }
     .tabs {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 8px;
       margin-bottom: 18px;
     }
@@ -153,7 +154,7 @@
     }
     .tab[aria-selected="true"] {
       border-color: var(--primary);
-      background: #dff4ee;
+      background: #dff5ff;
       color: var(--primary-strong);
     }
     .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
@@ -235,11 +236,11 @@
       margin-top: 14px;
       padding: 12px;
       border-radius: 8px;
-      background: #edf7f4;
-      color: #17443f;
+      background: #eaf7ff;
+      color: #06255f;
       font-size: 14px;
       line-height: 1.45;
-      border: 1px solid #c8e5dd;
+      border: 1px solid #bde9ff;
     }
     .status.warn { background: #fff7ed; color: #7c2d12; border-color: #fed7aa; }
     .status.bad { background: #fef2f2; color: #7f1d1d; border-color: #fecaca; }
@@ -296,8 +297,8 @@
       text-align: left;
       vertical-align: top;
     }
-    .table th { background: #edf7f4; color: #173d38; }
-    footer { padding: 36px 0 48px; color: var(--muted); background: #edf7f4; border-top: 1px solid var(--line); }
+    .table th { background: #eaf7ff; color: #06255f; }
+    footer { padding: 36px 0 48px; color: var(--muted); background: #eef6ff; border-top: 1px solid var(--line); }
     footer a { color: var(--primary-strong); }
     .footer-inner { display: grid; gap: 18px; justify-items: start; }
     .footer-logo { width: min(440px, 92vw); height: auto; display: block; }
@@ -374,6 +375,7 @@
           <button class="tab" type="button" role="tab" aria-selected="true" data-type="url">URL</button>
           <button class="tab" type="button" role="tab" aria-selected="false" data-type="wifi">Wi-Fi</button>
           <button class="tab" type="button" role="tab" aria-selected="false" data-type="vcard">vCard</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-type="event">Event</button>
           <button class="tab" type="button" role="tab" aria-selected="false" data-type="more">More</button>
         </div>
 
@@ -439,6 +441,29 @@
             <div class="field full">
               <label for="website">Website</label>
               <input id="website" type="url" placeholder="https://example.com">
+            </div>
+          </div>
+
+          <div class="grid type-fields hidden" data-panel="event">
+            <div class="field full">
+              <label for="eventTitle">Event title</label>
+              <input id="eventTitle" type="text" placeholder="LaunchLab Workshop">
+            </div>
+            <div class="field full">
+              <label for="eventLocation">Location</label>
+              <input id="eventLocation" type="text" placeholder="123 Market Street, San Francisco, CA">
+            </div>
+            <div class="field">
+              <label for="eventStart">Start</label>
+              <input id="eventStart" type="datetime-local">
+            </div>
+            <div class="field">
+              <label for="eventEnd">End</label>
+              <input id="eventEnd" type="datetime-local">
+            </div>
+            <div class="field full">
+              <label for="eventDescription">Description</label>
+              <textarea id="eventDescription" placeholder="Add agenda, RSVP details, or parking notes"></textarea>
             </div>
           </div>
 
@@ -603,6 +628,11 @@
       phone: document.querySelector('#phone'),
       email: document.querySelector('#email'),
       website: document.querySelector('#website'),
+      eventTitle: document.querySelector('#eventTitle'),
+      eventLocation: document.querySelector('#eventLocation'),
+      eventStart: document.querySelector('#eventStart'),
+      eventEnd: document.querySelector('#eventEnd'),
+      eventDescription: document.querySelector('#eventDescription'),
       moreType: document.querySelector('#moreType'),
       moreTarget: document.querySelector('#moreTarget'),
       moreBody: document.querySelector('#moreBody'),
@@ -647,6 +677,18 @@
           `EMAIL:${fields.email.value}`,
           `URL:${fields.website.value}`,
           'END:VCARD'
+        ].join('\n');
+      }
+      if (activeType === 'event') {
+        const formatDate = value => value ? value.replace(/[-:]/g, '').replace('T', 'T') + '00' : '';
+        return [
+          'BEGIN:VEVENT',
+          `SUMMARY:${fields.eventTitle.value || 'LaunchLab Event'}`,
+          `LOCATION:${fields.eventLocation.value}`,
+          `DTSTART:${formatDate(fields.eventStart.value)}`,
+          `DTEND:${formatDate(fields.eventEnd.value)}`,
+          `DESCRIPTION:${fields.eventDescription.value}`,
+          'END:VEVENT'
         ].join('\n');
       }
       if (activeType === 'more') {
