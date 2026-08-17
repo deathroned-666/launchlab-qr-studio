@@ -13,6 +13,8 @@ Bind the database to the Pages project:
 - Binding name: `QR_DB`
 - Type: D1 database
 
+If Cloudflare shows "Variables cannot be added to a Worker that only has static assets", redeploy after the `worker.js` and `wrangler.jsonc` files are present. Those files make the project a Worker with static assets plus API routes.
+
 Add these environment variables/secrets to the Pages project:
 
 - `SESSION_SECRET`: long random secret used to sign dashboard sessions
