@@ -265,6 +265,32 @@
       word-break: break-word;
     }
     .status.is-visible { display: block; }
+    .checkout-next {
+      display: grid;
+      gap: 8px;
+    }
+    .checkout-next strong { color: var(--ink); }
+    .checkout-next code {
+      display: block;
+      padding: 8px;
+      border-radius: 8px;
+      background: #fff;
+      color: #06255f;
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      word-break: break-all;
+    }
+    .checkout-next a {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 12px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 850;
+    }
     .notice {
       margin: 0 auto 44px;
       border: 1px solid #f3d5a2;
@@ -548,7 +574,7 @@
             const dashboardUrl = `dashboard.html?subscriptionId=${encodeURIComponent(data.subscriptionID || '')}`;
             showStatus(
               plan.key,
-              `${plan.name} subscription approved. Subscription ID: <strong>${subscriptionId}</strong>. <a href="${dashboardUrl}">Open the dashboard to claim access</a>.`,
+              `<div class="checkout-next"><strong>${plan.name} subscription approved.</strong><span>Save this subscription ID. The dashboard will use it to unlock your dynamic QR tools.</span><code>${subscriptionId}</code><a href="${dashboardUrl}">Open dashboard and claim access</a></div>`,
               { html: true }
             );
           },

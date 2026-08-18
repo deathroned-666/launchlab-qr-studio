@@ -54,13 +54,18 @@
       color: var(--primary-strong);
       box-shadow: inset 0 -2px 0 var(--primary);
     }
-    .hero { padding: 38px 0 22px; }
+    .hero { padding: 38px 0 22px; display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: end; }
     .eyebrow { margin: 0 0 10px; color: var(--primary-strong); font-size: 14px; font-weight: 850; text-transform: uppercase; letter-spacing: 0.08em; }
     h1 { margin: 0; max-width: 780px; font-size: clamp(34px, 6vw, 56px); line-height: 1; letter-spacing: 0; }
     .lead { max-width: 760px; margin: 18px 0 0; color: var(--muted); font-size: 18px; line-height: 1.6; }
-    .layout { display: grid; grid-template-columns: 0.92fr 1.08fr; gap: 18px; align-items: start; margin: 18px auto 56px; }
+    .quick-steps { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); box-shadow: 0 12px 34px rgba(2, 8, 38, 0.08); padding: 16px; }
+    .quick-steps strong { display: block; margin-bottom: 10px; font-size: 16px; }
+    .quick-steps ol { display: grid; gap: 9px; margin: 0; padding-left: 20px; color: var(--muted); line-height: 1.45; font-size: 14px; }
+    .layout { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 18px; align-items: start; margin: 18px auto 56px; }
     .panel { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); box-shadow: var(--shadow); padding: 18px; }
-    .panel h2 { margin: 0 0 12px; font-size: 22px; }
+    .panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .panel h2 { margin: 0; font-size: 22px; }
+    .panel-note { margin: 5px 0 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
     .grid { display: grid; gap: 12px; }
     .field { display: grid; gap: 7px; }
     label { color: #32413c; font-size: 13px; font-weight: 850; }
@@ -68,23 +73,38 @@
     input:focus, button:focus-visible { outline: 3px solid rgba(0,104,240,0.28); outline-offset: 2px; }
     .btn { min-height: 44px; border: 1px solid transparent; border-radius: 8px; background: var(--primary); color: #fff; font-weight: 850; cursor: pointer; padding: 0 14px; }
     .btn.secondary { background: #fff; color: var(--primary-strong); border-color: #b8d7cf; }
+    .btn.small { min-height: 36px; padding: 0 11px; font-size: 13px; }
+    .helper-box { margin: 12px 0 0; border: 1px solid #d7efff; border-radius: 8px; background: #f4fbff; padding: 12px; color: #24395f; font-size: 14px; line-height: 1.55; }
+    .helper-box strong { color: var(--ink); }
     .status { margin-top: 12px; padding: 12px; border-radius: 8px; background: #eaf7ff; color: #06255f; border: 1px solid #bde9ff; line-height: 1.45; font-size: 14px; }
     .status.bad { background: #fef2f2; color: #7f1d1d; border-color: #fecaca; }
+    .status.good { background: #ecfdf5; color: #064e3b; border-color: #a7f3d0; }
     .usage { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
     .metric { border: 1px solid var(--line); border-radius: 8px; background: #fbfcfb; padding: 12px; }
     .metric strong { display: block; font-size: 22px; }
     .metric span { color: var(--muted); font-size: 12px; }
+    .usage-bar { height: 10px; overflow: hidden; border-radius: 999px; background: #e6edf7; margin: -2px 0 16px; }
+    .usage-bar span { display: block; width: 0%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--primary), var(--cyan)); transition: width 180ms ease; }
     .qr-list { display: grid; gap: 12px; }
     .qr-card { display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 14px; border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: #fff; }
+    .qr-card.inactive { background: #fbfcff; opacity: 0.82; }
     .qr-card h3 { margin: 0 0 6px; font-size: 18px; }
     .qr-card p { margin: 0 0 8px; color: var(--muted); line-height: 1.45; word-break: break-word; }
     .qr-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .edit-details { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+    .edit-details summary { cursor: pointer; color: var(--primary-strong); font-weight: 850; }
+    .edit-form { display: grid; gap: 10px; margin-top: 10px; }
+    .check-row { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; }
+    .check-row input { width: auto; }
     .mini-qr { display: grid; place-items: center; min-height: 140px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
     .mini-qr svg { width: 124px; height: 124px; border: 8px solid #fff; }
+    .empty-state { display: grid; gap: 10px; border: 1px dashed #b8d7cf; border-radius: 8px; padding: 18px; background: #fbfcfb; color: var(--muted); line-height: 1.55; }
+    .empty-state strong { color: var(--ink); font-size: 17px; }
     .hidden { display: none !important; }
     footer { padding: 34px 0 44px; color: var(--muted); background: #eef6ff; border-top: 1px solid var(--line); }
     footer img { width: min(420px, 92vw); display: block; margin-bottom: 16px; }
     @media (max-width: 900px) {
+      .hero,
       .layout, .qr-card { grid-template-columns: 1fr; }
       .usage { grid-template-columns: 1fr; }
     }
@@ -108,14 +128,29 @@
 
   <main>
     <section class="wrap hero">
-      <p class="eyebrow">Subscriber dashboard</p>
-      <h1>Manage dynamic QR destinations after printing.</h1>
-      <p class="lead">Claim your PayPal subscription, create a managed short QR URL, print that QR code, then update its destination any time from this dashboard.</p>
+      <div>
+        <p class="eyebrow">Subscriber dashboard</p>
+        <h1>Manage dynamic QR destinations after printing.</h1>
+        <p class="lead">Claim your PayPal subscription, create a managed short QR URL, print that QR code, then update its destination any time from this dashboard.</p>
+      </div>
+      <aside class="quick-steps" aria-label="Dynamic QR setup steps">
+        <strong>How it works</strong>
+        <ol>
+          <li>Subscribe with PayPal and copy your subscription ID.</li>
+          <li>Unlock this dashboard with your PayPal email.</li>
+          <li>Create a dynamic QR and print the LaunchLab redirect QR.</li>
+        </ol>
+      </aside>
     </section>
 
     <section class="wrap layout">
       <div class="panel">
-        <h2>Claim subscriber access</h2>
+        <div class="panel-head">
+          <div>
+            <h2>Claim subscriber access</h2>
+            <p class="panel-note">Use the email on your PayPal subscription. This keeps casual static QR users separate from paid dynamic QR management.</p>
+          </div>
+        </div>
         <form class="grid" id="claimForm">
           <div class="field">
             <label for="email">PayPal subscriber email</label>
@@ -128,9 +163,18 @@
           <button class="btn" type="submit">Unlock dashboard</button>
         </form>
         <div class="status" id="claimStatus">After subscribing, PayPal sends LaunchLab a webhook. If your subscription is brand new, wait a minute before claiming access.</div>
+        <div class="helper-box">
+          <strong>Where is the subscription ID?</strong>
+          It appears after PayPal approval and in PayPal subscription emails. If you opened this page from the pricing success link, LaunchLab will fill it in automatically.
+        </div>
 
         <div id="createPanel" class="hidden" style="margin-top:18px;">
-          <h2>Create dynamic QR</h2>
+          <div class="panel-head">
+            <div>
+              <h2>Create dynamic QR</h2>
+              <p class="panel-note">The printed QR should point to the LaunchLab redirect URL. You can change the destination later without reprinting.</p>
+            </div>
+          </div>
           <form class="grid" id="createForm">
             <div class="field">
               <label for="label">Label</label>
@@ -150,14 +194,24 @@
       </div>
 
       <div class="panel">
-        <h2>Your dynamic QR codes</h2>
+        <div class="panel-head">
+          <div>
+            <h2>Your dynamic QR codes</h2>
+            <p class="panel-note">Copy the redirect link, edit destinations, pause old campaigns, and watch scan counts update.</p>
+          </div>
+          <button class="btn secondary small hidden" type="button" id="signOut">Sign out</button>
+        </div>
         <div class="usage">
           <div class="metric"><strong id="planName">-</strong><span>plan</span></div>
           <div class="metric"><strong id="usageCount">0 / 0</strong><span>dynamic QR usage</span></div>
           <div class="metric"><strong id="subscriberEmail">-</strong><span>subscriber</span></div>
         </div>
+        <div class="usage-bar" aria-hidden="true"><span id="usageFill"></span></div>
         <div class="qr-list" id="qrList">
-          <div class="status">Unlock the dashboard to view and create dynamic QR codes.</div>
+          <div class="empty-state">
+            <strong>Unlock the dashboard to start.</strong>
+            <span>After PayPal confirms the subscription, your paid plan controls how many dynamic QR codes you can save here.</span>
+          </div>
         </div>
       </div>
     </section>
@@ -179,6 +233,8 @@
     const claimStatus = document.querySelector('#claimStatus');
     const qrList = document.querySelector('#qrList');
     const createPanel = document.querySelector('#createPanel');
+    const signOutButton = document.querySelector('#signOut');
+    const usageFill = document.querySelector('#usageFill');
 
     const params = new URLSearchParams(window.location.search);
     const incomingSubscriptionId = params.get('subscriptionId') || '';
@@ -186,11 +242,13 @@
     if (incomingSubscriptionId) {
       document.querySelector('#subscriptionId').value = incomingSubscriptionId;
       setStatus('Subscription ID detected from PayPal. Enter the PayPal subscriber email, then unlock the dashboard.');
+    } else if (state.token) {
+      setStatus('Saved dashboard session found. Loading your dynamic QR codes.');
     }
 
-    function setStatus(message, isBad = false) {
+    function setStatus(message, tone = '') {
       claimStatus.textContent = message;
-      claimStatus.className = `status${isBad ? ' bad' : ''}`;
+      claimStatus.className = `status${tone ? ` ${tone}` : ''}`;
     }
 
     async function api(path, options = {}) {
@@ -218,25 +276,48 @@
       document.querySelector('#planName').textContent = data.subscription.planName;
       document.querySelector('#usageCount').textContent = `${data.usage.used} / ${data.usage.limit}`;
       document.querySelector('#subscriberEmail').textContent = state.email || '-';
+      usageFill.style.width = `${Math.min(100, Math.round((data.usage.used / Math.max(1, data.usage.limit)) * 100))}%`;
       createPanel.classList.remove('hidden');
+      signOutButton.classList.remove('hidden');
 
       if (!data.qrs.length) {
-        qrList.innerHTML = '<div class="status">No dynamic QR codes yet. Create your first managed QR from the form.</div>';
+        qrList.innerHTML = `
+          <div class="empty-state">
+            <strong>No dynamic QR codes yet.</strong>
+            <span>Create your first managed QR on the left. Print the LaunchLab redirect QR, then edit the destination here whenever the target page changes.</span>
+          </div>
+        `;
         return;
       }
 
       qrList.innerHTML = data.qrs.map(qr => {
         const redirectUrl = `${location.origin}/r/${qr.short_code}`;
         return `
-          <article class="qr-card">
+          <article class="qr-card${qr.is_active ? '' : ' inactive'}">
             <div>
               <h3>${escapeHtml(qr.label)}</h3>
               <p><strong>Redirect URL:</strong> <a href="${redirectUrl}" target="_blank" rel="noopener">${redirectUrl}</a></p>
               <p><strong>Destination:</strong> ${escapeHtml(qr.destination_url)}</p>
-              <p><strong>Scans:</strong> ${qr.scan_count} · <strong>Status:</strong> ${qr.is_active ? 'Active' : 'Inactive'}</p>
+              <p><strong>Scans:</strong> ${qr.scan_count} · <strong>Status:</strong> ${qr.is_active ? 'Active' : 'Paused'} · <strong>Updated:</strong> ${formatDate(qr.updated_at)}</p>
               <div class="qr-actions">
                 <button class="btn secondary" type="button" data-copy="${redirectUrl}">Copy link</button>
+                <button class="btn secondary" type="button" data-toggle-active="${qr.id}" data-next-active="${qr.is_active ? '0' : '1'}">${qr.is_active ? 'Pause' : 'Restore'}</button>
               </div>
+              <details class="edit-details">
+                <summary>Edit label or destination</summary>
+                <form class="edit-form" data-update-qr="${qr.id}">
+                  <div class="field">
+                    <label for="label-${qr.id}">Label</label>
+                    <input id="label-${qr.id}" name="label" type="text" value="${escapeHtml(qr.label)}" maxlength="120" required>
+                  </div>
+                  <div class="field">
+                    <label for="destination-${qr.id}">Destination URL</label>
+                    <input id="destination-${qr.id}" name="destinationUrl" type="url" value="${escapeHtml(qr.destination_url)}" required>
+                  </div>
+                  <label class="check-row"><input name="isActive" type="checkbox" ${qr.is_active ? 'checked' : ''}> Active redirect</label>
+                  <button class="btn small" type="submit">Save changes</button>
+                </form>
+              </details>
             </div>
             <div class="mini-qr" aria-label="QR preview">${makeQrSvg(redirectUrl)}</div>
           </article>
@@ -254,10 +335,18 @@
       })[character]);
     }
 
+    function formatDate(value) {
+      if (!value) return 'new';
+      const date = new Date(value.replace(' ', 'T') + 'Z');
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
     async function loadQrs() {
       if (!state.token) return;
       const data = await api('/api/qrs');
       renderList(data);
+      setStatus(`${data.subscription.planName} plan active. You can create and manage dynamic QR codes.`, 'good');
     }
 
     document.querySelector('#claimForm').addEventListener('submit', async event => {
@@ -273,10 +362,10 @@
         state.email = data.user.email;
         localStorage.setItem(tokenKey, state.token);
         localStorage.setItem(emailKey, state.email);
-        setStatus(`${data.subscription.planName} subscription unlocked.`);
+        setStatus(`${data.subscription.planName} subscription unlocked. Your browser will remember this dashboard session.`, 'good');
         await loadQrs();
       } catch (error) {
-        setStatus(error.message, true);
+        setStatus(error.message, 'bad');
       }
     });
 
@@ -292,21 +381,73 @@
           })
         });
         event.target.reset();
-        setStatus('Dynamic QR created.');
+        setStatus('Dynamic QR created. Copy or print the LaunchLab redirect QR, then edit the destination here any time.', 'good');
         await loadQrs();
       } catch (error) {
-        setStatus(error.message, true);
+        setStatus(error.message, 'bad');
       }
     });
 
     document.addEventListener('click', async event => {
       const button = event.target.closest('[data-copy]');
-      if (!button) return;
-      await navigator.clipboard.writeText(button.dataset.copy);
-      setStatus('Redirect link copied.');
+      if (button) {
+        await navigator.clipboard.writeText(button.dataset.copy);
+        setStatus('Redirect link copied. Use this URL when printing the dynamic QR code.', 'good');
+        return;
+      }
+
+      const toggleButton = event.target.closest('[data-toggle-active]');
+      if (toggleButton) {
+        try {
+          await api(`/api/qrs/${encodeURIComponent(toggleButton.dataset.toggleActive)}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ isActive: toggleButton.dataset.nextActive === '1' })
+          });
+          setStatus(toggleButton.dataset.nextActive === '1' ? 'Dynamic QR restored.' : 'Dynamic QR paused. Existing printed codes will show inactive until restored.', 'good');
+          await loadQrs();
+        } catch (error) {
+          setStatus(error.message, 'bad');
+        }
+      }
     });
 
-    loadQrs().catch(error => setStatus(error.message, true));
+    document.addEventListener('submit', async event => {
+      const form = event.target.closest('[data-update-qr]');
+      if (!form) return;
+      event.preventDefault();
+      try {
+        const formData = new FormData(form);
+        await api(`/api/qrs/${encodeURIComponent(form.dataset.updateQr)}`, {
+          method: 'PATCH',
+          body: JSON.stringify({
+            label: formData.get('label'),
+            destinationUrl: formData.get('destinationUrl'),
+            isActive: formData.get('isActive') === 'on'
+          })
+        });
+        setStatus('Dynamic QR updated. Printed codes now send scanners to the latest destination.', 'good');
+        await loadQrs();
+      } catch (error) {
+        setStatus(error.message, 'bad');
+      }
+    });
+
+    signOutButton.addEventListener('click', () => {
+      state.token = '';
+      state.email = '';
+      localStorage.removeItem(tokenKey);
+      localStorage.removeItem(emailKey);
+      createPanel.classList.add('hidden');
+      signOutButton.classList.add('hidden');
+      usageFill.style.width = '0%';
+      document.querySelector('#planName').textContent = '-';
+      document.querySelector('#usageCount').textContent = '0 / 0';
+      document.querySelector('#subscriberEmail').textContent = '-';
+      qrList.innerHTML = '<div class="empty-state"><strong>Signed out.</strong><span>Unlock the dashboard again with your PayPal email and subscription ID.</span></div>';
+      setStatus('Signed out of this browser.');
+    });
+
+    loadQrs().catch(error => setStatus(error.message, 'bad'));
   </script>
 </body>
 </html>
