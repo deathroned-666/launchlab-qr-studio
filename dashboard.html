@@ -75,6 +75,19 @@
     .btn.secondary { background: #fff; color: var(--primary-strong); border-color: #b8d7cf; }
     .btn.small { min-height: 36px; padding: 0 11px; font-size: 13px; }
     .btn:disabled { cursor: not-allowed; opacity: 0.58; }
+    .text-action {
+      min-height: 34px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--primary-strong);
+      font-size: 13px;
+      font-weight: 850;
+      cursor: pointer;
+      padding: 0 8px;
+      white-space: nowrap;
+    }
+    .text-action:hover, .text-action:focus-visible { background: #eaf7ff; }
     .helper-box { margin: 12px 0 0; border: 1px solid #d7efff; border-radius: 8px; background: #f4fbff; padding: 12px; color: #24395f; font-size: 14px; line-height: 1.55; }
     .helper-box strong { color: var(--ink); }
     .status { margin-top: 12px; padding: 12px; border-radius: 8px; background: #eaf7ff; color: #06255f; border: 1px solid #bde9ff; line-height: 1.45; font-size: 14px; }
@@ -200,7 +213,7 @@
             <h2>Your dynamic QR codes</h2>
             <p class="panel-note">Copy the redirect link, edit destinations, pause old campaigns, and watch scan counts update.</p>
           </div>
-          <button class="btn secondary small hidden" type="button" id="signOut">Sign out</button>
+          <button class="text-action hidden" type="button" id="signOut">Sign out</button>
         </div>
         <div class="usage">
           <div class="metric"><strong id="planName">-</strong><span>plan</span></div>
