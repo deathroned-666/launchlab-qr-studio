@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="launchlab-qr-studio-logo.png">
+  <link rel="apple-touch-icon" href="launchlab-qr-studio-logo.png">
   <title>Pricing - LaunchLab QR Studio</title>
   <meta name="description" content="LaunchLab QR Studio pricing. Static QR codes are free forever. Upgrade when you need editable, trackable, managed dynamic QR campaigns.">
   <link rel="canonical" href="https://launchlab-qr-studio.arbietapel.workers.dev/pricing.html">
@@ -108,23 +110,102 @@
       gap: 16px;
       margin: 24px auto 34px;
     }
-    .plan {
+    .trust-strip {
       display: grid;
-      gap: 14px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      margin: 8px auto 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--line);
+      box-shadow: 0 10px 28px rgba(2, 8, 38, 0.06);
+    }
+    .trust-strip span {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 14px;
+      background: rgba(255, 255, 255, 0.86);
+      color: #24395f;
+      font-size: 14px;
+      font-weight: 760;
+      line-height: 1.35;
+    }
+    .trust-strip span::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+    }
+    .plan {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto auto auto auto 1fr auto auto;
+      gap: 15px;
       align-content: start;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: var(--panel);
-      padding: 18px;
+      padding: 20px 18px 18px;
       box-shadow: 0 10px 28px rgba(2, 8, 38, 0.08);
     }
-    .plan.featured { border-color: #9bdfff; box-shadow: var(--shadow); }
+    .plan.featured {
+      border-color: #70ccff;
+      box-shadow: var(--shadow);
+    }
+    .plan.featured::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-strong), var(--cyan));
+    }
+    .plan-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .plan-kicker {
+      margin: 0 0 6px;
+      color: var(--primary-strong);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
     .plan h2 { margin: 0; font-size: 22px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #eaf7ff;
+      color: #06255f;
+      font-size: 12px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+    .featured .badge {
+      background: #06255f;
+      color: #fff;
+    }
     .price { display: flex; align-items: baseline; gap: 4px; margin: 0; }
-    .price strong { font-size: 34px; letter-spacing: 0; }
+    .price strong { font-size: 38px; letter-spacing: 0; color: #314f7f; }
     .price span { color: var(--muted); font-weight: 750; }
-    .currency-note { margin: -8px 0 0; color: var(--muted); font-size: 13px; }
+    .currency-note { margin: -8px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
     .plan p { margin: 0; color: var(--muted); line-height: 1.55; }
+    .value-line {
+      min-height: 72px;
+      color: #24395f;
+      font-size: 15px;
+    }
     .plan ul {
       display: grid;
       gap: 9px;
@@ -149,10 +230,25 @@
       border-radius: 4px;
       background: linear-gradient(135deg, var(--primary), var(--cyan));
     }
+    .plan-proof {
+      display: grid;
+      gap: 6px;
+      margin-top: 2px;
+      padding: 12px;
+      border: 1px solid #d7efff;
+      border-radius: 8px;
+      background: #f4fbff;
+      color: #24395f;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .plan-proof strong { color: var(--ink); }
     .paypal-slot {
-      min-height: 106px;
+      min-height: 112px;
       display: grid;
       align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
     }
     .status {
       display: none;
@@ -197,6 +293,7 @@
     footer a { color: var(--primary-strong); }
     @media (max-width: 1000px) {
       .pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .trust-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .hero { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
@@ -205,7 +302,9 @@
       .navlinks { width: 100%; overflow-x: auto; padding-bottom: 4px; }
       .hero { padding-top: 26px; }
       .pricing-grid { grid-template-columns: 1fr; }
+      .trust-strip { grid-template-columns: 1fr; }
       .price strong { font-size: 30px; }
+      .value-line { min-height: auto; }
     }
   </style>
 </head>
@@ -234,67 +333,114 @@
       </aside>
     </section>
 
+    <section class="wrap trust-strip" aria-label="Subscription confidence">
+      <span>Unlimited static QR codes stay free</span>
+      <span>Upgrade only for editable dynamic links</span>
+      <span>Secure checkout handled by PayPal</span>
+      <span>Cancel or manage billing in PayPal</span>
+    </section>
+
     <section class="wrap pricing-grid" aria-label="LaunchLab QR Studio subscription plans">
       <article class="plan">
-        <h2>Personal</h2>
+        <div class="plan-top">
+          <div>
+            <p class="plan-kicker">Start small</p>
+            <h2>Personal</h2>
+          </div>
+          <span class="badge">25 codes</span>
+        </div>
         <p class="price"><strong>$7</strong><span>/mo</span></p>
-        <p class="currency-note">Billed in USD. PayPal may show local currency conversion at checkout.</p>
-        <p>For individuals, freelancers, and small recurring print needs.</p>
+        <p class="currency-note">Billed monthly in USD. PayPal may show local currency conversion at checkout.</p>
+        <p class="value-line">For freelancers and solo operators who need a few printed QR codes they can update later.</p>
         <ul>
-          <li>25 dynamic QR codes</li>
-          <li>Editable destinations</li>
-          <li>Saved QR dashboard support</li>
-          <li>Scan analytics support</li>
-          <li>Unlimited static QR codes remain free</li>
+          <li>25 editable dynamic QR codes</li>
+          <li>Change destinations after printing</li>
+          <li>Saved QR dashboard access</li>
+          <li>Scan count and campaign history</li>
+          <li>Free static QR generator included</li>
         </ul>
+        <div class="plan-proof">
+          <strong>Best fit:</strong>
+          vCards, portfolio links, small events, and reusable signs.
+        </div>
         <div class="paypal-slot" id="paypal-button-container-personal"></div>
         <div class="status" id="status-personal" role="status"></div>
       </article>
 
       <article class="plan featured">
-        <h2>Standard</h2>
+        <div class="plan-top">
+          <div>
+            <p class="plan-kicker">Most practical</p>
+            <h2>Standard</h2>
+          </div>
+          <span class="badge">Best start</span>
+        </div>
         <p class="price"><strong>$19</strong><span>/mo</span></p>
-        <p class="currency-note">Billed in USD. PayPal may show local currency conversion at checkout.</p>
-        <p>For small businesses running QR codes across menus, flyers, signs, and cards.</p>
+        <p class="currency-note">Billed monthly in USD. PayPal may show local currency conversion at checkout.</p>
+        <p class="value-line">For small businesses running QR campaigns across menus, flyers, signs, cards, and promos.</p>
         <ul>
-          <li>100 dynamic QR codes</li>
-          <li>Campaign folders and tags support</li>
-          <li>Editable destinations</li>
-          <li>Scan analytics support</li>
-          <li>Unlimited static QR codes remain free</li>
+          <li>100 editable dynamic QR codes</li>
+          <li>Campaign folders and tags</li>
+          <li>Update offers without reprinting</li>
+          <li>Scan analytics for every code</li>
+          <li>Free static QR generator included</li>
         </ul>
+        <div class="plan-proof">
+          <strong>Best fit:</strong>
+          Restaurants, shops, service businesses, and repeat local campaigns.
+        </div>
         <div class="paypal-slot" id="paypal-button-container-standard"></div>
         <div class="status" id="status-standard" role="status"></div>
       </article>
 
       <article class="plan">
-        <h2>Business</h2>
+        <div class="plan-top">
+          <div>
+            <p class="plan-kicker">Scale campaigns</p>
+            <h2>Business</h2>
+          </div>
+          <span class="badge">300 codes</span>
+        </div>
         <p class="price"><strong>$49</strong><span>/mo</span></p>
-        <p class="currency-note">Billed in USD. PayPal may show local currency conversion at checkout.</p>
-        <p>For agencies, local marketers, and operators managing multiple campaigns.</p>
+        <p class="currency-note">Billed monthly in USD. PayPal may show local currency conversion at checkout.</p>
+        <p class="value-line">For agencies, local marketers, and operators managing multiple clients or locations.</p>
         <ul>
-          <li>300 dynamic QR codes</li>
-          <li>Bulk dynamic QR support</li>
-          <li>Branded templates support</li>
-          <li>Team-ready campaign workflow</li>
-          <li>Unlimited static QR codes remain free</li>
+          <li>300 editable dynamic QR codes</li>
+          <li>Bulk dynamic QR campaign setup</li>
+          <li>Branded template support</li>
+          <li>Client and location organization</li>
+          <li>Free static QR generator included</li>
         </ul>
+        <div class="plan-proof">
+          <strong>Best fit:</strong>
+          Agencies, property marketers, print shops, and multi-location operators.
+        </div>
         <div class="paypal-slot" id="paypal-button-container-business"></div>
         <div class="status" id="status-business" role="status"></div>
       </article>
 
       <article class="plan">
-        <h2>Corporate</h2>
+        <div class="plan-top">
+          <div>
+            <p class="plan-kicker">Managed program</p>
+            <h2>Corporate</h2>
+          </div>
+          <span class="badge">1,000 codes</span>
+        </div>
         <p class="price"><strong>$149</strong><span>/mo</span></p>
-        <p class="currency-note">Billed in USD. PayPal may show local currency conversion at checkout.</p>
-        <p>For teams, franchises, and larger managed QR programs.</p>
+        <p class="currency-note">Billed monthly in USD. PayPal may show local currency conversion at checkout.</p>
+        <p class="value-line">For teams, franchises, and larger QR programs that need room to grow.</p>
         <ul>
-          <li>1,000 dynamic QR codes</li>
-          <li>Team access support</li>
+          <li>1,000 editable dynamic QR codes</li>
+          <li>Team and franchise workflow support</li>
           <li>Custom domain support</li>
-          <li>Future API access</li>
-          <li>Unlimited static QR codes remain free</li>
+          <li>Future API access path</li>
+          <li>Free static QR generator included</li>
         </ul>
+        <div class="plan-proof">
+          <strong>Best fit:</strong>
+          Larger teams, franchises, institutions, and managed print programs.
+        </div>
         <div class="paypal-slot" id="paypal-button-container-corporate"></div>
         <div class="status" id="status-corporate" role="status"></div>
       </article>
