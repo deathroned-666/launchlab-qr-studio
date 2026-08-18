@@ -143,6 +143,30 @@
       border-radius: 999px;
       background: linear-gradient(135deg, var(--primary), var(--cyan));
     }
+    .checkout-brief {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+      gap: 18px;
+      align-items: center;
+      margin: 18px auto 0;
+      border: 1px solid #bde9ff;
+      border-radius: 8px;
+      background: #eaf7ff;
+      padding: 16px;
+      color: #06255f;
+      box-shadow: 0 10px 28px rgba(2, 8, 38, 0.06);
+    }
+    .checkout-brief h2 { margin: 0 0 8px; font-size: 22px; }
+    .checkout-brief p { margin: 0; color: #24395f; line-height: 1.55; }
+    .checkout-brief ol {
+      display: grid;
+      gap: 6px;
+      margin: 0;
+      padding-left: 22px;
+      color: #24395f;
+      line-height: 1.45;
+      font-size: 14px;
+    }
     .plan {
       position: relative;
       overflow: hidden;
@@ -245,6 +269,17 @@
       line-height: 1.45;
     }
     .plan-proof strong { color: var(--ink); }
+    .checkout-note {
+      margin-top: 2px;
+      padding: 11px;
+      border: 1px solid #d7efff;
+      border-radius: 8px;
+      background: #f4fbff;
+      color: #24395f;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .checkout-note strong { color: var(--ink); }
     .paypal-slot {
       min-height: 112px;
       display: grid;
@@ -322,6 +357,7 @@
     @media (max-width: 1000px) {
       .pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .trust-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .checkout-brief { grid-template-columns: 1fr; }
       .hero { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
@@ -333,6 +369,7 @@
       .trust-strip { grid-template-columns: 1fr; }
       .price strong { font-size: 30px; }
       .value-line { min-height: auto; }
+      .checkout-brief { padding: 14px; }
     }
   </style>
 </head>
@@ -368,6 +405,18 @@
       <span>Cancel or manage billing in PayPal</span>
     </section>
 
+    <section class="wrap checkout-brief" aria-label="What happens after PayPal checkout">
+      <div>
+        <h2>Before you subscribe: how dashboard access works</h2>
+        <p>After PayPal approves your subscription, LaunchLab QR Studio shows your PayPal subscription ID and opens the dashboard with that ID filled in. Use the same PayPal email to unlock your dynamic QR tools.</p>
+      </div>
+      <ol>
+        <li>Subscribe with PayPal.</li>
+        <li>Save the subscription ID shown after checkout.</li>
+        <li>Open the dashboard and unlock access with your PayPal email.</li>
+      </ol>
+    </section>
+
     <section class="wrap pricing-grid" aria-label="LaunchLab QR Studio subscription plans">
       <article class="plan">
         <div class="plan-top">
@@ -391,6 +440,7 @@
           <strong>Best fit:</strong>
           vCards, portfolio links, small events, and reusable signs.
         </div>
+        <div class="checkout-note"><strong>After checkout:</strong> PayPal returns a subscription ID. The dashboard uses that ID plus your PayPal email to unlock this plan.</div>
         <div class="paypal-slot" id="paypal-button-container-personal"></div>
         <div class="status" id="status-personal" role="status"></div>
       </article>
@@ -417,6 +467,7 @@
           <strong>Best fit:</strong>
           Restaurants, shops, service businesses, and repeat local campaigns.
         </div>
+        <div class="checkout-note"><strong>After checkout:</strong> PayPal returns a subscription ID. The dashboard uses that ID plus your PayPal email to unlock this plan.</div>
         <div class="paypal-slot" id="paypal-button-container-standard"></div>
         <div class="status" id="status-standard" role="status"></div>
       </article>
@@ -443,6 +494,7 @@
           <strong>Best fit:</strong>
           Agencies, property marketers, print shops, and multi-location operators.
         </div>
+        <div class="checkout-note"><strong>After checkout:</strong> PayPal returns a subscription ID. The dashboard uses that ID plus your PayPal email to unlock this plan.</div>
         <div class="paypal-slot" id="paypal-button-container-business"></div>
         <div class="status" id="status-business" role="status"></div>
       </article>
@@ -469,6 +521,7 @@
           <strong>Best fit:</strong>
           Larger teams, franchises, institutions, and managed print programs.
         </div>
+        <div class="checkout-note"><strong>After checkout:</strong> PayPal returns a subscription ID. The dashboard uses that ID plus your PayPal email to unlock this plan.</div>
         <div class="paypal-slot" id="paypal-button-container-corporate"></div>
         <div class="status" id="status-corporate" role="status"></div>
       </article>
