@@ -15,6 +15,20 @@ Bind the database to the Pages project:
 
 If Cloudflare shows "Variables cannot be added to a Worker that only has static assets", redeploy after the `worker.js` and `wrangler.jsonc` files are present. Those files make the project a Worker with static assets plus API routes.
 
+Important: after every Git deploy, check `/api/health`. It must show `"hasDatabase":true`. If it flips back to `false`, add the D1 binding again in Cloudflare or add the database ID directly to `wrangler.jsonc` under a `d1_databases` entry:
+
+```jsonc
+"d1_databases": [
+  {
+    "binding": "QR_DB",
+    "database_name": "launchlab_qr_studio",
+    "database_id": "PASTE_D1_DATABASE_ID_HERE"
+  }
+]
+```
+
+Do not leave the placeholder in production. Copy the real D1 database ID from Cloudflare > Storage & Databases > D1 SQL Database > `launchlab_qr_studio` > Settings.
+
 Add these environment variables/secrets to the Pages project:
 
 - `SESSION_SECRET`: long random secret used to sign dashboard sessions

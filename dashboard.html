@@ -74,6 +74,7 @@
     .btn { min-height: 44px; border: 1px solid transparent; border-radius: 8px; background: var(--primary); color: #fff; font-weight: 850; cursor: pointer; padding: 0 14px; }
     .btn.secondary { background: #fff; color: var(--primary-strong); border-color: #b8d7cf; }
     .btn.small { min-height: 36px; padding: 0 11px; font-size: 13px; }
+    .btn:disabled { cursor: not-allowed; opacity: 0.58; }
     .helper-box { margin: 12px 0 0; border: 1px solid #d7efff; border-radius: 8px; background: #f4fbff; padding: 12px; color: #24395f; font-size: 14px; line-height: 1.55; }
     .helper-box strong { color: var(--ink); }
     .status { margin-top: 12px; padding: 12px; border-radius: 8px; background: #eaf7ff; color: #06255f; border: 1px solid #bde9ff; line-height: 1.45; font-size: 14px; }
@@ -160,7 +161,7 @@
             <label for="subscriptionId">PayPal subscription ID</label>
             <input id="subscriptionId" type="text" placeholder="I-xxxxxxxxxxxx or PayPal subscription ID" required>
           </div>
-          <button class="btn" type="submit">Unlock dashboard</button>
+          <button class="btn" id="unlockButton" type="submit">Unlock dashboard</button>
         </form>
         <div class="status" id="claimStatus">After subscribing, PayPal sends LaunchLab a webhook. If your subscription is brand new, wait a minute before claiming access.</div>
         <div class="helper-box">
@@ -188,7 +189,7 @@
               <label for="shortCode">Custom short code, optional</label>
               <input id="shortCode" type="text" placeholder="fall-menu" pattern="[a-zA-Z0-9-]{4,48}">
             </div>
-            <button class="btn" type="submit">Create managed QR</button>
+            <button class="btn" id="createButton" type="submit">Create managed QR</button>
           </form>
         </div>
       </div>
@@ -235,6 +236,9 @@
     const createPanel = document.querySelector('#createPanel');
     const signOutButton = document.querySelector('#signOut');
     const usageFill = document.querySelector('#usageFill');
+    const unlockButton = document.querySelector('#unlockButton');
+    const createButton = document.querySelector('#createButton');
+    let backendReady = true;
 
     const params = new URLSearchParams(window.location.search);
     const incomingSubscriptionId = params.get('subscriptionId') || '';
@@ -260,9 +264,32 @@
           ...(options.headers || {})
         }
       });
-      const data = await response.json();
+      const text = await response.text();
+      let data = null;
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch {
+        throw new Error('The dynamic QR service returned a Cloudflare error page instead of JSON. Please check that the Worker has the QR_DB database binding.');
+      }
       if (!response.ok) throw new Error(data.error || 'Request failed.');
       return data;
+    }
+
+    async function checkBackend() {
+      try {
+        const health = await api('/api/health');
+        backendReady = Boolean(health.hasDatabase && health.hasSessionSecret);
+        unlockButton.disabled = !backendReady;
+        createButton.disabled = !backendReady;
+        if (!backendReady) {
+          setStatus('Dynamic QR dashboard is temporarily unavailable while database access is configured. Static QR generation still works.', 'bad');
+        }
+      } catch {
+        backendReady = false;
+        unlockButton.disabled = true;
+        createButton.disabled = true;
+        setStatus('Dynamic QR dashboard is temporarily unavailable. Please try again after the Cloudflare Worker configuration is checked.', 'bad');
+      }
     }
 
     function makeQrSvg(value) {
@@ -351,6 +378,10 @@
 
     document.querySelector('#claimForm').addEventListener('submit', async event => {
       event.preventDefault();
+      if (!backendReady) {
+        setStatus('Dynamic QR dashboard is temporarily unavailable while database access is configured.', 'bad');
+        return;
+      }
       try {
         const email = document.querySelector('#email').value.trim();
         const subscriptionId = document.querySelector('#subscriptionId').value.trim();
@@ -371,6 +402,10 @@
 
     document.querySelector('#createForm').addEventListener('submit', async event => {
       event.preventDefault();
+      if (!backendReady) {
+        setStatus('Dynamic QR dashboard is temporarily unavailable while database access is configured.', 'bad');
+        return;
+      }
       try {
         await api('/api/qrs', {
           method: 'POST',
@@ -447,7 +482,7 @@
       setStatus('Signed out of this browser.');
     });
 
-    loadQrs().catch(error => setStatus(error.message, 'bad'));
+    checkBackend().then(() => loadQrs()).catch(error => setStatus(error.message, 'bad'));
   </script>
 </body>
 </html>
