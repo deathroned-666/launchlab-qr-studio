@@ -29,7 +29,7 @@
     * { box-sizing: border-box; }
     body { margin: 0; color: var(--ink); background: linear-gradient(180deg, rgba(0,184,240,0.12), transparent 360px), var(--paper); }
     a { color: var(--primary-strong); }
-    button, input { font: inherit; }
+    button, input, select { font: inherit; }
     .wrap { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
     nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--line); }
     .brand img { width: 238px; max-width: 58vw; display: block; }
@@ -70,7 +70,8 @@
     .field { display: grid; gap: 7px; }
     label { color: #32413c; font-size: 13px; font-weight: 850; }
     input { width: 100%; border: 1px solid #cad7d0; border-radius: 8px; background: #fff; color: var(--ink); padding: 11px 12px; outline: none; }
-    input:focus, button:focus-visible { outline: 3px solid rgba(0,104,240,0.28); outline-offset: 2px; }
+    select { border: 1px solid #cad7d0; border-radius: 8px; background: #fff; color: var(--ink); padding: 9px 10px; outline: none; }
+    input:focus, select:focus, button:focus-visible { outline: 3px solid rgba(0,104,240,0.28); outline-offset: 2px; }
     .btn { min-height: 44px; border: 1px solid transparent; border-radius: 8px; background: var(--primary); color: #fff; font-weight: 850; cursor: pointer; padding: 0 14px; }
     .btn.secondary { background: #fff; color: var(--primary-strong); border-color: #b8d7cf; }
     .btn.small { min-height: 36px; padding: 0 11px; font-size: 13px; }
@@ -105,6 +106,8 @@
     .qr-card h3 { margin: 0 0 6px; font-size: 18px; }
     .qr-card p { margin: 0 0 8px; color: var(--muted); line-height: 1.45; word-break: break-word; }
     .qr-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .export-control { display: flex; align-items: center; justify-content: flex-end; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 850; }
+    .export-control select { min-height: 36px; }
     .edit-details { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
     .edit-details summary { cursor: pointer; color: var(--primary-strong); font-weight: 850; }
     .edit-form { display: grid; gap: 10px; margin-top: 10px; }
@@ -121,6 +124,8 @@
       .hero,
       .layout, .qr-card { grid-template-columns: 1fr; }
       .usage { grid-template-columns: 1fr; }
+      .panel-head { align-items: flex-start; flex-direction: column; }
+      .export-control { justify-content: flex-start; }
     }
     @media (max-width: 640px) {
       .wrap { width: min(100% - 20px, 1180px); }
@@ -213,7 +218,16 @@
             <h2>Your dynamic QR codes</h2>
             <p class="panel-note">Copy the redirect link, edit destinations, pause old campaigns, and watch scan counts update.</p>
           </div>
-          <button class="text-action hidden" type="button" id="signOut">Sign out</button>
+          <div class="export-control">
+            <label for="dynamicPngSize">PNG size</label>
+            <select id="dynamicPngSize">
+              <option value="1000">1000 px</option>
+              <option value="512">512 px</option>
+              <option value="2000">2000 px</option>
+              <option value="3000">3000 px</option>
+            </select>
+            <button class="text-action hidden" type="button" id="signOut">Sign out</button>
+          </div>
         </div>
         <div class="usage">
           <div class="metric"><strong id="planName">-</strong><span>plan</span></div>
@@ -251,6 +265,7 @@
     const usageFill = document.querySelector('#usageFill');
     const unlockButton = document.querySelector('#unlockButton');
     const createButton = document.querySelector('#createButton');
+    const dynamicPngSize = document.querySelector('#dynamicPngSize');
     let backendReady = true;
 
     const params = new URLSearchParams(window.location.search);
@@ -312,6 +327,16 @@
       return qr.createSvgTag({ scalable: true });
     }
 
+    function downloadName(qr) {
+      const base = String(qr.label || qr.short_code || 'dynamic-qr')
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 48);
+      return `${base || qr.short_code || 'dynamic-qr'}-dynamic-qr`;
+    }
+
     function renderList(data) {
       document.querySelector('#planName').textContent = data.subscription.planName;
       document.querySelector('#usageCount').textContent = `${data.usage.used} / ${data.usage.limit}`;
@@ -341,6 +366,8 @@
               <p><strong>Scans:</strong> ${qr.scan_count} · <strong>Status:</strong> ${qr.is_active ? 'Active' : 'Paused'} · <strong>Updated:</strong> ${formatDate(qr.updated_at)}</p>
               <div class="qr-actions">
                 <button class="btn secondary" type="button" data-copy="${redirectUrl}">Copy link</button>
+                <button class="btn secondary" type="button" data-download-svg="${redirectUrl}" data-filename="${escapeHtml(downloadName(qr))}">Download SVG</button>
+                <button class="btn secondary" type="button" data-download-png="${redirectUrl}" data-filename="${escapeHtml(downloadName(qr))}">Download PNG</button>
                 <button class="btn secondary" type="button" data-toggle-active="${qr.id}" data-next-active="${qr.is_active ? '0' : '1'}">${qr.is_active ? 'Pause' : 'Restore'}</button>
               </div>
               <details class="edit-details">
@@ -380,6 +407,46 @@
       const date = new Date(value.replace(' ', 'T') + 'Z');
       if (Number.isNaN(date.getTime())) return value;
       return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function downloadBlob(filename, blob) {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    function downloadSvg(value, filename) {
+      const svg = makeQrSvg(value);
+      downloadBlob(`${filename}.svg`, new Blob([svg], { type: 'image/svg+xml' }));
+    }
+
+    function downloadPng(value, filename) {
+      const svg = makeQrSvg(value);
+      const img = new Image();
+      const svgBlob = new Blob([svg], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(svgBlob);
+      img.onload = () => {
+        const size = Number(dynamicPngSize.value) || 1000;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, size, size);
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(img, 0, 0, size, size);
+        canvas.toBlob(blob => {
+          if (blob) downloadBlob(`${filename}.png`, blob);
+          URL.revokeObjectURL(url);
+        }, 'image/png');
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        setStatus('PNG export failed. Try SVG, which is best for print.', 'bad');
+      };
+      img.src = url;
     }
 
     async function loadQrs() {
@@ -441,6 +508,20 @@
       if (button) {
         await navigator.clipboard.writeText(button.dataset.copy);
         setStatus('Redirect link copied. Use this URL when printing the dynamic QR code.', 'good');
+        return;
+      }
+
+      const svgButton = event.target.closest('[data-download-svg]');
+      if (svgButton) {
+        downloadSvg(svgButton.dataset.downloadSvg, svgButton.dataset.filename || 'dynamic-qr');
+        setStatus('SVG downloaded. Use SVG for sharp professional print layouts.', 'good');
+        return;
+      }
+
+      const pngButton = event.target.closest('[data-download-png]');
+      if (pngButton) {
+        downloadPng(pngButton.dataset.downloadPng, pngButton.dataset.filename || 'dynamic-qr');
+        setStatus(`PNG download started at ${dynamicPngSize.value}px.`, 'good');
         return;
       }
 
