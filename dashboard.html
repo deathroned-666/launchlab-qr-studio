@@ -67,9 +67,12 @@
     .panel h2 { margin: 0; font-size: 22px; }
     .panel-note { margin: 5px 0 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
     .grid { display: grid; gap: 12px; }
+    .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .field-grid .full { grid-column: 1 / -1; }
     .field { display: grid; gap: 7px; }
     label { color: #32413c; font-size: 13px; font-weight: 850; }
     input { width: 100%; border: 1px solid #cad7d0; border-radius: 8px; background: #fff; color: var(--ink); padding: 11px 12px; outline: none; }
+    input[type="color"] { min-height: 44px; padding: 5px; }
     select { border: 1px solid #cad7d0; border-radius: 8px; background: #fff; color: var(--ink); padding: 9px 10px; outline: none; }
     input:focus, select:focus, button:focus-visible { outline: 3px solid rgba(0,104,240,0.28); outline-offset: 2px; }
     .btn { min-height: 44px; border: 1px solid transparent; border-radius: 8px; background: var(--primary); color: #fff; font-weight: 850; cursor: pointer; padding: 0 14px; }
@@ -115,6 +118,9 @@
     .check-row input { width: auto; }
     .mini-qr { display: grid; place-items: center; min-height: 140px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
     .mini-qr svg { width: 124px; height: 124px; border: 8px solid #fff; }
+    .brand-tools { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 14px; }
+    .brand-tools summary { cursor: pointer; color: var(--primary-strong); font-weight: 850; }
+    .brand-tools .panel-note { margin-bottom: 12px; }
     .empty-state { display: grid; gap: 10px; border: 1px dashed #b8d7cf; border-radius: 8px; padding: 18px; background: #fbfcfb; color: var(--muted); line-height: 1.55; }
     .empty-state strong { color: var(--ink); font-size: 17px; }
     .hidden { display: none !important; }
@@ -123,6 +129,7 @@
     @media (max-width: 900px) {
       .hero,
       .layout, .qr-card { grid-template-columns: 1fr; }
+      .field-grid { grid-template-columns: 1fr; }
       .usage { grid-template-columns: 1fr; }
       .panel-head { align-items: flex-start; flex-direction: column; }
       .export-control { justify-content: flex-start; }
@@ -207,6 +214,42 @@
               <label for="shortCode">Custom short code, optional</label>
               <input id="shortCode" type="text" placeholder="fall-menu" pattern="[a-zA-Z0-9-]{4,48}">
             </div>
+            <details class="brand-tools" open>
+              <summary>Brand the downloaded QR</summary>
+              <p class="panel-note">These print settings stay in this browser. Your logo image is not uploaded or saved on LaunchLab servers.</p>
+              <div class="field-grid">
+                <div class="field">
+                  <label for="dynamicDarkColor">QR color</label>
+                  <input id="dynamicDarkColor" type="color" value="#071827">
+                </div>
+                <div class="field">
+                  <label for="dynamicLightColor">Background</label>
+                  <input id="dynamicLightColor" type="color" value="#ffffff">
+                </div>
+                <div class="field">
+                  <label for="dynamicErrorLevel">Error correction</label>
+                  <select id="dynamicErrorLevel">
+                    <option value="Q">Logo friendly</option>
+                    <option value="M">Balanced</option>
+                    <option value="H">Maximum recovery</option>
+                    <option value="L">Smallest pattern</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="dynamicLogoText">Center label or initials</label>
+                  <input id="dynamicLogoText" type="text" maxlength="8" placeholder="Optional, e.g. ACME">
+                </div>
+                <div class="field full">
+                  <label for="dynamicLogoFile">Logo image</label>
+                  <input id="dynamicLogoFile" type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp">
+                </div>
+              </div>
+              <div class="qr-actions" style="margin-top:12px;">
+                <button class="btn secondary small" type="button" id="saveDynamicBrand">Save design</button>
+                <button class="btn secondary small" type="button" id="loadDynamicBrand">Load design</button>
+                <button class="btn secondary small" type="button" id="clearDynamicLogo">Clear logo</button>
+              </div>
+            </details>
             <button class="btn" id="createButton" type="submit">Create managed QR</button>
           </form>
         </div>
@@ -266,6 +309,16 @@
     const unlockButton = document.querySelector('#unlockButton');
     const createButton = document.querySelector('#createButton');
     const dynamicPngSize = document.querySelector('#dynamicPngSize');
+    const dynamicDarkColor = document.querySelector('#dynamicDarkColor');
+    const dynamicLightColor = document.querySelector('#dynamicLightColor');
+    const dynamicErrorLevel = document.querySelector('#dynamicErrorLevel');
+    const dynamicLogoText = document.querySelector('#dynamicLogoText');
+    const dynamicLogoFile = document.querySelector('#dynamicLogoFile');
+    const saveDynamicBrand = document.querySelector('#saveDynamicBrand');
+    const loadDynamicBrand = document.querySelector('#loadDynamicBrand');
+    const clearDynamicLogo = document.querySelector('#clearDynamicLogo');
+    let dynamicLogoData = '';
+    let latestDashboardData = null;
     let backendReady = true;
 
     const params = new URLSearchParams(window.location.search);
@@ -320,11 +373,42 @@
       }
     }
 
+    function svgEscape(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      })[character]);
+    }
+
     function makeQrSvg(value) {
-      const qr = qrcode(0, 'M');
+      const dark = dynamicDarkColor.value || '#071827';
+      const light = dynamicLightColor.value || '#ffffff';
+      const level = dynamicErrorLevel.value || 'Q';
+      const label = dynamicLogoText.value.trim();
+      const qr = qrcode(0, level);
       qr.addData(value);
       qr.make();
-      return qr.createSvgTag({ scalable: true });
+      const cells = qr.getModuleCount();
+      const quiet = 4;
+      const total = cells + quiet * 2;
+      let rects = `<rect width="${total}" height="${total}" fill="${light}"/>`;
+      for (let row = 0; row < cells; row += 1) {
+        for (let col = 0; col < cells; col += 1) {
+          if (qr.isDark(row, col)) {
+            rects += `<rect x="${col + quiet}" y="${row + quiet}" width="1" height="1" fill="${dark}"/>`;
+          }
+        }
+      }
+      let center = '';
+      if (dynamicLogoData) {
+        center = `<rect x="${total / 2 - 5.2}" y="${total / 2 - 5.2}" width="10.4" height="10.4" rx="1.6" fill="${light}"/><image href="${dynamicLogoData}" x="${total / 2 - 4.2}" y="${total / 2 - 4.2}" width="8.4" height="8.4" preserveAspectRatio="xMidYMid meet"/>`;
+      } else if (label) {
+        center = `<rect x="${total / 2 - 4.8}" y="${total / 2 - 3.2}" width="9.6" height="6.4" rx="1.2" fill="${light}"/><text x="${total / 2}" y="${total / 2 + 1.35}" text-anchor="middle" font-size="2.8" font-family="Arial, sans-serif" font-weight="700" fill="${dark}">${svgEscape(label)}</text>`;
+      }
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${total} ${total}" shape-rendering="crispEdges" role="img" aria-label="Dynamic QR code">${rects}${center}</svg>`;
     }
 
     function downloadName(qr) {
@@ -452,6 +536,7 @@
     async function loadQrs() {
       if (!state.token) return;
       const data = await api('/api/qrs');
+      latestDashboardData = data;
       renderList(data);
       setStatus(`${data.subscription.planName} plan active. You can create and manage dynamic QR codes.`, 'good');
     }
@@ -559,6 +644,59 @@
       } catch (error) {
         setStatus(error.message, 'bad');
       }
+    });
+
+    function refreshDynamicQrDesign() {
+      if (!latestDashboardData) return;
+      renderList(latestDashboardData);
+    }
+
+    [dynamicDarkColor, dynamicLightColor, dynamicErrorLevel, dynamicLogoText].forEach(input => {
+      input.addEventListener('input', refreshDynamicQrDesign);
+    });
+
+    dynamicLogoFile.addEventListener('change', () => {
+      const file = dynamicLogoFile.files && dynamicLogoFile.files[0];
+      if (!file) {
+        dynamicLogoData = '';
+        refreshDynamicQrDesign();
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        dynamicLogoData = reader.result;
+        if (!['Q', 'H'].includes(dynamicErrorLevel.value)) dynamicErrorLevel.value = 'Q';
+        setStatus('Logo ready for dynamic QR downloads. Use Logo friendly or Maximum recovery for best scan reliability.', 'good');
+        refreshDynamicQrDesign();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    saveDynamicBrand.addEventListener('click', () => {
+      localStorage.setItem('launchlabDynamicQrBrandKit', JSON.stringify({
+        darkColor: dynamicDarkColor.value,
+        lightColor: dynamicLightColor.value,
+        errorLevel: dynamicErrorLevel.value,
+        logoText: dynamicLogoText.value
+      }));
+      setStatus('Dynamic QR design saved on this browser.', 'good');
+    });
+
+    loadDynamicBrand.addEventListener('click', () => {
+      const kit = JSON.parse(localStorage.getItem('launchlabDynamicQrBrandKit') || '{}');
+      if (kit.darkColor) dynamicDarkColor.value = kit.darkColor;
+      if (kit.lightColor) dynamicLightColor.value = kit.lightColor;
+      if (kit.errorLevel) dynamicErrorLevel.value = kit.errorLevel;
+      if (kit.logoText) dynamicLogoText.value = kit.logoText;
+      refreshDynamicQrDesign();
+      setStatus('Dynamic QR design loaded for previews and downloads.', 'good');
+    });
+
+    clearDynamicLogo.addEventListener('click', () => {
+      dynamicLogoData = '';
+      dynamicLogoFile.value = '';
+      refreshDynamicQrDesign();
+      setStatus('Logo cleared. Dynamic QR downloads will use the center label if one is set.', 'good');
     });
 
     signOutButton.addEventListener('click', () => {
